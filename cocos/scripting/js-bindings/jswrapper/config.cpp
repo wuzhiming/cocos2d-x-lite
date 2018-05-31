@@ -31,7 +31,7 @@
 
 #include <windows.h>
 
-static void _winLog(bool is_error, const char *format, va_list args)
+static void _winLog(FILE* fp, const char *format, va_list args)
 {
     static const int MAX_LOG_LENGTH = 16 * 1024;
     int bufferSize = MAX_LOG_LENGTH;
@@ -69,13 +69,9 @@ static void _winLog(bool is_error, const char *format, va_list args)
         MultiByteToWideChar(CP_UTF8, 0, tempBuf, -1, wszBuf, sizeof(wszBuf));
         OutputDebugStringW(wszBuf);
         WideCharToMultiByte(CP_ACP, 0, wszBuf, -1, tempBuf, sizeof(tempBuf), nullptr, FALSE);
-        if(is_error){
-            printf("%s", tempBuf);
-            fflush(stdout);
-        }else {
-            fprintf(stderr,"%s",tempBuf);
-            fflush(stderr);
-        }
+
+        fprintf(fp, "%s", tempBuf);
+        fflush(fp);
         
         pos += MAX_LOG_LENGTH;
 
@@ -89,7 +85,7 @@ void seLogD(const char * format, ...)
 {
     va_list args;
     va_start(args, format);
-    _winLog(false, format, args);
+    _winLog(stdout, format, args);
     va_end(args);
 }
 
@@ -97,7 +93,7 @@ void seLogE(const char * format, ...)
 {
     va_list args;
     va_start(args, format);
-    _winLog(true, format, args);
+    _winLog(stderr, format, args);
     va_end(args);
 }
 
