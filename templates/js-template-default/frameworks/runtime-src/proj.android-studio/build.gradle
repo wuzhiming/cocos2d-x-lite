@@ -19,6 +19,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+        if(USE_FACEBOOK_SDK){
+            flatDir {
+                    dirs 'libs'
+                }
+        }
     }
 }
 
