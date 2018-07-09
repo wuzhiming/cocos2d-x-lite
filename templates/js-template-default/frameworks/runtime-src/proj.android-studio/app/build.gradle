@@ -89,9 +89,7 @@ android {
         }
     }
 }
-if(USE_FACEBOOK_SDK){
-    android.defaultConfig.manifestPlaceholders = [facebookAppId:FACEBOOK_APP_ID]
-}
+
 android.applicationVariants.all { variant ->
     // delete previous files first
     delete "${buildDir}/intermediates/assets/${variant.dirName}"
@@ -121,11 +119,7 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    if(USE_FACEBOOK_SDK){
-        implementation 'com.facebook.android:facebook-login:[4,5)'
-        compile(name:'facebook-livestream', ext:'aar')
-    }
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
     implementation fileTree(dir: "../../../cocos2d-x/cocos/platform/android/java/libs", include: ['*.jar'])
     implementation project(':libcocos2dx')
 }
