@@ -40,13 +40,13 @@ program
     .parse(process.argv);
 
 gulp.task('make-cocos2d-x', gulpSequence('gen-cocos2d-x', 'upload-cocos2d-x'));
-gulp.task('make-simulator', gulpSequence('gen-simulator', 'update-simulator-config', 'update-simulator-dll', 'archive-simulator', 'upload-simulator'));
+gulp.task('make-simulator', gulpSequence('gen-simulator', 'sign-simulator', 'update-simulator-config', 'update-simulator-dll', 'archive-simulator', 'upload-simulator'));
 
 if (process.platform === 'darwin') {
-    gulp.task('publish', gulpSequence('init', 'bump-version', 'make-cocos2d-x', 'make-simulator', 'push-tag'));
+    gulp.task('publish', gulpSequence('update', 'init', 'bump-version', 'make-cocos2d-x', 'make-simulator', 'push-tag'));
 }
 else {
-    gulp.task('publish', gulpSequence('init', 'bump-version', 'make-simulator'));
+    gulp.task('publish', gulpSequence('update', 'init', 'bump-version', 'make-simulator'));
 }
 
 function execSync(cmd, workPath) {
@@ -124,6 +124,12 @@ function getCurrentBranch() {
     return output.stdout.toString().trim();
 }
 
+gulp.task('update', function (cb) {
+    const git = require('./utils/git');
+    var branch = git.getCurrentBranch('.');
+    git.pull('.', 'git@github.com:cocos-creator/cocos2d-x-lite.git', branch, cb);
+});
+
 gulp.task('init', function(cb) {
     execSync('python download-deps.py --remove-download no');
     execSync('git submodule update --init');
@@ -138,20 +144,7 @@ gulp.task('gen-cocos2d-x', function(cb) {
 
 gulp.task('gen-simulator', function(cb) {
     var cocosConsoleRoot = './tools/cocos2d-console/bin';
-    var cocosConsoleBin;
-    if (process.platform === 'darwin') {
-        cocosConsoleBin = Path.join(cocosConsoleRoot, 'cocos');
-        if (fs.existsSync('./simulator.xcodeproj')) {
-            // copy mac xcode project with signing info
-            fs.copySync('./simulator.xcodeproj', './tools/simulator/frameworks/runtime-src/proj.ios_mac/simulator.xcodeproj');
-        }
-        else {
-            return cb('Failed to generate simulator, xcode project not signed. Run "gulp sign-simulator" please.');
-        }
-    }
-    else {
-        cocosConsoleBin = Path.join(cocosConsoleRoot, 'cocos.bat');
-    }
+    var cocosConsoleBin = Path.join(cocosConsoleRoot, process.platform === 'win32' ? 'cocos.bat' : 'cocos');
     var args;
     if (process.platform === 'darwin') {
         args = ['gen-simulator', '-m', 'debug', '-p', 'mac'];
@@ -187,9 +180,13 @@ gulp.task('gen-simulator', function(cb) {
 
 gulp.task('sign-simulator', function () {
     if (process.platform === 'darwin') {
-        execSync('git checkout -- ./tools/simulator/frameworks/runtime-src/proj.ios_mac/simulator.xcodeproj');
-        execSync('/Applications/Xcode.app/Contents/MacOS/Xcode ./tools/simulator/frameworks/runtime-src/proj.ios_mac/simulator.xcodeproj');
-        fs.copySync('./tools/simulator/frameworks/runtime-src/proj.ios_mac/simulator.xcodeproj', './simulator.xcodeproj');
+        try {
+            var cmd = fs.readFileSync(Path.join(process.env.HOME, '.ssh', 'codesignCmd_simulator.txt'), 'utf8');
+            execSync(cmd);
+        }
+        catch (e) {
+            console.warn('No need to run sign-simulator since v1.10.', e);
+        }
     }
 });
 

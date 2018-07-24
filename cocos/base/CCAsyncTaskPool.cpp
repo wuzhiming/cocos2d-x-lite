@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2012 Zynga Inc.
+Copyright (c) 2010      cocos2d-x.org
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
@@ -24,44 +24,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __JSB_LOCALSTORAGE_H
-#define __JSB_LOCALSTORAGE_H
+#include "base/CCAsyncTaskPool.h"
 
-#include <string>
-#include "base/ccMacros.h"
+NS_CC_BEGIN
 
-/**
- * @addtogroup storage
- * @{
- */
+AsyncTaskPool* AsyncTaskPool::s_asyncTaskPool = nullptr;
 
-/** Local Storage support for the JS Bindings.*/
+AsyncTaskPool* AsyncTaskPool::getInstance()
+{
+    if (s_asyncTaskPool == nullptr)
+    {
+        s_asyncTaskPool = new (std::nothrow) AsyncTaskPool();
+    }
+    return s_asyncTaskPool;
+}
 
-/** Initializes the database. If path is null, it will create an in-memory DB. */
-void CC_DLL localStorageInit( const std::string& fullpath = "");
+void AsyncTaskPool::destroyInstance()
+{
+    delete s_asyncTaskPool;
+    s_asyncTaskPool = nullptr;
+}
 
-/** Frees the allocated resources. */
-void CC_DLL localStorageFree();
+AsyncTaskPool::AsyncTaskPool()
+{
+}
 
-/** Sets an item in the JS. */
-void CC_DLL localStorageSetItem( const std::string& key, const std::string& value);
+AsyncTaskPool::~AsyncTaskPool()
+{
+}
 
-/** Gets an item from the JS. */
-bool CC_DLL localStorageGetItem( const std::string& key, std::string *outItem );
-
-/** Removes an item from the JS. */
-void CC_DLL localStorageRemoveItem( const std::string& key );
-
-/** Removes all items from the JS. */
-void CC_DLL localStorageClear();
-
-/** Gets an key from the JS. */
-void CC_DLL localStorageGetKey(const int nIndex, std::string *outKey);
-
-/** Gets all items count in the JS. */
-void CC_DLL localStorageGetLength(int& outLength);
-
-// end group
-/// @}
-
-#endif // __JSB_LOCALSTORAGE_H
+NS_CC_END
