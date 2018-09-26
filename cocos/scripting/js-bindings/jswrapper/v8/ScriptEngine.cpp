@@ -562,7 +562,7 @@ namespace se {
             _env = node::CreateEnvironment(_isolateData, _context.Get(_isolate), 0, nullptr, 0, nullptr);
 
             node::DebugOptions options;
-            options.set_wait_for_connect(_isWaitForConnect);
+            options.set_wait_for_connect(_isWaitForConnect);// the program will be hung up until debug attach if _isWaitForConnect = true
             options.set_inspector_enabled(true);
             options.set_port((int)_debuggerServerPort);
             options.set_host_name(_debuggerServerAddr.c_str());
