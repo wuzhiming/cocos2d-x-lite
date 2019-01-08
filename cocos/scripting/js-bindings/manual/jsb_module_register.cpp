@@ -113,6 +113,8 @@ bool jsb_register_all_modules()
     se->addRegisterCallback(register_all_network);
     se->addRegisterCallback(register_all_cocos2dx_network_manual);
     se->addRegisterCallback(register_all_xmlhttprequest);
+    // extension depend on network
+    se->addRegisterCallback(register_all_extension);
     
 #if USE_MIDDLEWARE
     se->addRegisterCallback(register_all_cocos2dx_editor_support);
@@ -148,11 +150,8 @@ bool jsb_register_all_modules()
 #endif
     
 #if USE_SOCKET
-
     se->addRegisterCallback(register_all_websocket);
     se->addRegisterCallback(register_all_socketio);
-    // extension depend on network
-    se->addRegisterCallback(register_all_extension);
 #endif
 
 #if USE_VIDEO && (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
