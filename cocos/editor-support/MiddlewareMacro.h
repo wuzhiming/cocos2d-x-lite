@@ -22,12 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 #pragma once
-// if buffer out range,will increase with INCREASE_BUFFER_SIZE size
-#define INCREASE_BUFFER_SIZE 102400
-// vertex buffer max capacity
-#define MAX_VB_BUFFER_SIZE 1024000
-// index buffer max capacity
-#define MAX_IB_BUFFER_SIZE 1024000
+// index buffer init capacity
+#define INIT_IB_BUFFER_SIZE 1024000
 // can fill material data max capacity
 #define MAX_MATERIAL_BUFFER_SIZE 512
 // fill debug data max capacity
@@ -46,3 +42,6 @@
 #ifndef USING_NS_MW
 #define USING_NS_MW using namespace cocos2d::middleware
 #endif
+
+#define VF_XYUVC 5
+#define VF_XYUVCC 6

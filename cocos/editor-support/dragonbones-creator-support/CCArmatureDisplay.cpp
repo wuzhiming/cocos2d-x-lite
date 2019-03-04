@@ -92,8 +92,9 @@ void CCArmatureDisplay::dbUpdate()
     auto mgr = MiddlewareManager::getInstance();
     if (!mgr->isUpdating) return;
     
-    IOBuffer& vb = mgr->vb;
-    IOBuffer& ib = mgr->ib;
+    MeshBuffer* mb = mgr->getMeshBuffer(VF_XYUVC);
+    IOBuffer& vb = mb->getVB();
+    IOBuffer& ib = mb->getIB();
     
     _materialBuffer->reset();
     
@@ -113,7 +114,7 @@ void CCArmatureDisplay::dbUpdate()
     // Reserved space to save material len
     _materialBuffer->writeUint32(0);
     // Reserved space to save index offset
-    _materialBuffer->writeUint32((uint32_t)mgr->ib.getCurPos()/sizeof(unsigned short));
+    _materialBuffer->writeUint32((uint32_t)ib.getCurPos()/sizeof(unsigned short));
     
     // Traverse all aramture to fill vertex and index buffer.
     traverseArmature(_armature);
@@ -226,11 +227,16 @@ void CCArmatureDisplay::traverseArmature(Armature* armature)
 {
     auto& slots = armature->getSlots();
     auto mgr = MiddlewareManager::getInstance();
-    IOBuffer& vb = mgr->vb;
-    IOBuffer& ib = mgr->ib;
+    MeshBuffer* mb = mgr->getMeshBuffer(VF_XYUVC);
+    IOBuffer& vb = mb->getVB();
+    IOBuffer& ib = mb->getIB();
+    int isFull = 0;
     
     for (std::size_t i = 0, len = slots.size(); i < len; i++)
     {
+        // Reset isFull flag.
+        isFull = 0;
+
         CCSlot* slot = (CCSlot*)slots[i];
         if (!slot->getVisible())
         {
@@ -271,8 +277,11 @@ void CCArmatureDisplay::traverseArmature(Armature* armature)
         if (!texture) continue;
         _curTextureIndex = texture->getRealTextureIndex();
         
+        auto vbSize = slot->triangles.vertCount * sizeof(middleware::V2F_T2F_C4B);
+        isFull |= vb.checkSpace(vbSize, true);
+        
         // If texture or blendMode change,will change material.
-        if (_preTextureIndex != _curTextureIndex || _preBlendDst != _curBlendDst || _preBlendSrc != _curBlendSrc)
+        if (_preTextureIndex != _curTextureIndex || _preBlendDst != _curBlendDst || _preBlendSrc != _curBlendSrc || isFull)
         {
             if (_preISegWritePos != -1)
             {
@@ -282,6 +291,10 @@ void CCArmatureDisplay::traverseArmature(Armature* armature)
             _materialBuffer->writeUint32(_curTextureIndex);
             _materialBuffer->writeUint32(_curBlendSrc);
             _materialBuffer->writeUint32(_curBlendDst);
+            auto glIB = mb->getGLIB();
+            auto glVB = mb->getGLVB();
+            _materialBuffer->writeUint32(glIB);
+            _materialBuffer->writeUint32(glVB);
             
             //Reserve indice segamentation count.
             _preISegWritePos = (int)_materialBuffer->getCurPos();
@@ -312,18 +325,16 @@ void CCArmatureDisplay::traverseArmature(Armature* armature)
         {
             middleware::V2F_T2F_C4B* vertex = triangles.verts + v;
             middleware::V2F_T2F_C4B* worldVertex = worldTriangles + v;
-            worldVertex->vertices.x = vertex->vertices.x * worldMatrix.m[0] + vertex->vertices.y * worldMatrix.m[4] + worldMatrix.m[12];
-            worldVertex->vertices.y = vertex->vertices.x * worldMatrix.m[1] + vertex->vertices.y * worldMatrix.m[5] + worldMatrix.m[13];
-            worldVertex->colors.r = (GLubyte)_finalColor.r;
-            worldVertex->colors.g = (GLubyte)_finalColor.g;
-            worldVertex->colors.b = (GLubyte)_finalColor.b;
-            worldVertex->colors.a = (GLubyte)_finalColor.a;
+            worldVertex->vertex.x = vertex->vertex.x * worldMatrix.m[0] + vertex->vertex.y * worldMatrix.m[4] + worldMatrix.m[12];
+            worldVertex->vertex.y = vertex->vertex.x * worldMatrix.m[1] + vertex->vertex.y * worldMatrix.m[5] + worldMatrix.m[13];
+            worldVertex->color.r = (GLubyte)_finalColor.r;
+            worldVertex->color.g = (GLubyte)_finalColor.g;
+            worldVertex->color.b = (GLubyte)_finalColor.b;
+            worldVertex->color.a = (GLubyte)_finalColor.a;
         }
         
         // Fill MiddlewareManager vertex buffer
         auto vertexOffset = vb.getCurPos() / sizeof(middleware::V2F_T2F_C4B);
-		auto vbSize = triangles.vertCount * sizeof(middleware::V2F_T2F_C4B);
-		vb.checkSpace(vbSize, true);
         vb.writeBytes((char*)worldTriangles, vbSize);
         
 		auto ibSize = triangles.indexCount * sizeof(unsigned short);

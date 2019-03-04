@@ -105,26 +105,6 @@ Texture2D : function (
 middleware.MiddlewareManager = {
 
 /**
- * @method getGLVBID
- * @return {unsigned int}
- */
-getGLVBID : function (
-)
-{
-    return 0;
-},
-
-/**
- * @method removeTimer
- * @param {cc.middleware::IMiddleware} arg0
- */
-removeTimer : function (
-imiddleware 
-)
-{
-},
-
-/**
  * @method update
  * @param {float} arg0
  */
@@ -132,26 +112,6 @@ update : function (
 float 
 )
 {
-},
-
-/**
- * @method addTimer
- * @param {cc.middleware::IMiddleware} arg0
- */
-addTimer : function (
-imiddleware 
-)
-{
-},
-
-/**
- * @method getGLIBID
- * @return {unsigned int}
- */
-getGLIBID : function (
-)
-{
-    return 0;
 },
 
 /**

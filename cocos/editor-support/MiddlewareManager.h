@@ -23,9 +23,9 @@
  ****************************************************************************/
 #pragma once
 
-#include "IOBuffer.h"
-#include "map"
-#include "vector"
+#include "MeshBuffer.h"
+#include <map>
+#include <vector>
 #include "base/CCRef.h"
 #include "MiddlewareMacro.h"
 
@@ -83,24 +83,7 @@ public:
      */
     void removeTimer(IMiddleware* editor);
     
-    /**
-     * @return opengl index buffer id
-     */
-    uint32_t getGLIBID()
-    {
-        return _glIBID;
-    }
-    
-    /**
-     * @return opengl vertex buffer id
-     */
-    uint32_t getGLVBID()
-    {
-        return _glVBID;
-    }
-    
-    cocos2d::middleware::IOBuffer vb;
-    cocos2d::middleware::IOBuffer ib;
+    MeshBuffer* getMeshBuffer(int format);
     
     MiddlewareManager();
     ~MiddlewareManager();
@@ -109,13 +92,10 @@ public:
     bool isUpdating = false;
     
 private:
-    void uploadVB();
-    void uploadIB();
-private:
     std::map<IMiddleware*, bool> _updateMap;
     std::vector<IMiddleware*> _removeList;
-    uint32_t _glIBID = 0;
-    uint32_t _glVBID = 0;
+    std::map<int, MeshBuffer*> _mbMap;
+    
     static MiddlewareManager* _instance;
 };
 MIDDLEWARE_END
