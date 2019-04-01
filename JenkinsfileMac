@@ -9,13 +9,21 @@ node('mac') {
     checkout scm;
     stage ('setup environment') {
         if (Boolean.parseBoolean(env.FIREBALL_SETUP_ENV)) {
-            sh 'python download-deps.py'
+            sh 'python download-deps.py -r no'
             sh 'git submodule update --init'
             sh 'npm install'
         } else {
             echo 'skip setup-environment stage'
         }
     }
+
+    stage ('cocos2d-x-lite publish') {
+            if (Boolean.parseBoolean(env.FIREBALL_LITE_PUBLISH)) {
+                sh 'gulp publish'
+            } else {
+                echo 'skip cocos2d-x-lite publish stage'
+            }
+        }
 
     stage ('cocos2d-x-lite publish') {
         if (Boolean.parseBoolean(env.FIREBALL_LITE_PUBLISH)) {
