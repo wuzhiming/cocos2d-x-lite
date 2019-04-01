@@ -291,8 +291,6 @@ class CocosZipInstaller(object):
                 if remove_downloaded is not None:
                     if remove_downloaded == 'yes':
                         os.remove(self._filename)
-                elif self.ask_to_delete_downloaded_zip_file():
-                    os.remove(self._filename)
         else:
             print("==> Download (%s) finish!" % self._filename)
 
