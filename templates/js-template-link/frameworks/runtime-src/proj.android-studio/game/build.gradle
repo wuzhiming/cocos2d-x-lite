@@ -18,9 +18,9 @@ android {
                     targets 'cocos2djs'
                     arguments 'NDK_TOOLCHAIN_VERSION=clang'
 
-                    def module_paths = [project.file("../../../cocos2d-x"),
-                                        project.file("../../../cocos2d-x/cocos"),
-                                        project.file("../../../cocos2d-x/external")]
+                    def module_paths = [project.file("${COCOS_X_ROOT}"),
+                                        project.file("${COCOS_X_ROOT}/cocos"),
+                                        project.file("${COCOS_X_ROOT}/external")]
                     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                         arguments 'NDK_MODULE_PATH=' + module_paths.join(";")
                     }
@@ -107,6 +107,7 @@ android.featureVariants.all { variant ->
             from "${sourceDir}/res"
             into "${outputDir}/res"
         }
+
         copy {
             from "${sourceDir}/subpackages"
             into "${outputDir}/subpackages"
@@ -132,7 +133,7 @@ android.featureVariants.all { variant ->
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-    implementation fileTree(dir: "../../../cocos2d-x/cocos/platform/android/java/libs", include: ['*.jar'])
+    implementation fileTree(dir: "${COCOS_X_ROOT}/cocos/platform/android/java/libs", include: ['*.jar'])
     implementation 'com.google.android.instantapps:instantapps:1.1.0'
     implementation 'com.google.android.gms:play-services-instantapps:16.0.0'
     implementation project(':libcocos2dx')
