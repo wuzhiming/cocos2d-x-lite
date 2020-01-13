@@ -49,8 +49,8 @@ se::Object* __glObj = nullptr;
 
 static ThreadPool* __threadPool = nullptr;
 
-static std::shared_ptr<cc::network::Downloader> _localDownloader = nullptr;
-static std::map<std::string, std::function<void(const std::string&, unsigned char*, uint)>> _localDownloaderHandlers;
+static std::shared_ptr<cocos2d::network::Downloader> _localDownloader = nullptr;
+static std::map<std::string, std::function<void(const std::string&, unsigned char*, int ,const std::string&)>> _localDownloaderHandlers;
 static uint64_t _localDownloaderTaskId = 1000000;
 static std::string xxteaKey = "";
 void jsb_set_xxtea_key(const std::string& key)
@@ -81,7 +81,7 @@ static cc::network::Downloader *localDownloader()
             unsigned char* imageData = (unsigned char*)malloc(imageBytes);
             memcpy(imageData, data.data(), imageBytes);
 
-            (callback->second)("", imageData, static_cast<uint>(imageBytes));
+            (callback->second)("", imageData, static_cast<uint>(imageBytes), "");
             //initImageFunc("", imageData, imageBytes);
             _localDownloaderHandlers.erase(callback);
         };
@@ -91,13 +91,21 @@ static cc::network::Downloader *localDownloader()
                                       const std::string& errorStr) {
 
             SE_REPORT_ERROR("Getting image from (%s) failed!", task.requestURL.c_str());
+            auto callback = _localDownloaderHandlers.find(task.identifier);
+            if(callback == _localDownloaderHandlers.end())
+            {
+                SE_REPORT_ERROR("Getting image from (%s), callback not found!!", task.requestURL.c_str());
+                return;
+            }
+
+            (callback->second)("", nullptr, 0, errorStr);
             _localDownloaderHandlers.erase(task.identifier);
         };
     }
     return _localDownloader.get();
 }
 
-static void localDownloaderCreateTask(const std::string &url, std::function<void(const std::string&, unsigned char*, int )> callback)
+static void localDownloaderCreateTask(const std::string &url, std::function<void(const std::string&, unsigned char*, int, const std::string&)> callback)
 {
     std::stringstream ss;
     ss << "jsb_loadimage_" << (_localDownloaderTaskId++);
@@ -289,7 +297,7 @@ namespace {
         int argc = (int)args.size();
         assert(argc >= 1);
         assert(args[0].isString());
-        
+
         return jsb_run_script(args[0].toString(), &s.rval());
     }
     SE_BIND_FUNC(require)
@@ -800,10 +808,10 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
         callbackVal.toObject()->call(seArgs, nullptr);
         return true;
     }
-    
+
     std::shared_ptr<se::Value> callbackPtr = std::make_shared<se::Value>(callbackVal);
 
-    auto initImageFunc = [path, callbackPtr](const std::string& fullPath, unsigned char* imageData, int imageBytes){
+    auto initImageFunc = [path, callbackVal](const std::string& fullPath, unsigned char* imageData, int imageBytes, const std::string& errorMsg){
         Image* img = new (std::nothrow) Image();
 
         __threadPool->pushTask([=](int tid){
@@ -813,7 +821,11 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
             // going into task callback.
             // Be careful of invoking any Cocos2d-x interface in a sub-thread.
             bool loadSucceed = false;
-            if (fullPath.empty())
+
+            if (!errorMsg.empty()) {
+                loadSucceed = false;
+            }
+            else if (fullPath.empty())
             {
                 loadSucceed = img->initWithImageData(imageData, imageBytes);
                 free(imageData);
@@ -850,6 +862,13 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
                 {
                     SE_REPORT_ERROR("initWithImageFile: %s failed!", path.c_str());
                 }
+
+                if (!errorMsg.empty()) {
+                    se::HandleObject retObj(se::Object::createPlainObject());
+                    retObj->setProperty("errorMsg", se::Value(errorMsg));
+                    seArgs.push_back(se::Value(retObj));
+                }
+
                 callbackPtr->toObject()->call(seArgs, nullptr);
                 img->release();
             });
@@ -875,7 +894,7 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
             SE_REPORT_ERROR("Decode base64 image data failed!");
             return false;
         }
-        initImageFunc("", imageData, imageBytes);
+        initImageFunc("", imageData, imageBytes, "");
     }
     else
     {
@@ -888,7 +907,7 @@ bool jsb_global_load_image(const std::string& path, const se::Value& callbackVal
             SE_REPORT_ERROR("File (%s) doesn't exist!", path.c_str());
             return false;
         }
-        initImageFunc(fullPath, nullptr, 0);
+        initImageFunc(fullPath, nullptr, 0, "");
     }
     return true;
 }
@@ -923,7 +942,7 @@ static bool js_destroyImage(se::State& s) {
         ok &= seval_to_ulong(args[0], &data);
         SE_PRECONDITION2(ok, false, "js_destroyImage : Error processing arguments");
         free(reinterpret_cast<char*>(data));
-        
+
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
