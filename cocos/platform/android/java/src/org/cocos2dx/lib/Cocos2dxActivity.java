@@ -285,6 +285,7 @@ public abstract class Cocos2dxActivity extends Activity implements Cocos2dxHelpe
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
+            flag |= View.class.getDeclaredField("SYSTEM_UI_FLAG_IMMERSIVE_STICKY").getInt(null);
             View view = getWindow().getDecorView();
             view.setSystemUiVisibility(flag);
 
