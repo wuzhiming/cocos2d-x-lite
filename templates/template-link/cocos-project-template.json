@@ -1,18 +1,18 @@
 {
-    "do_default": {
+    "doDefault": {
         "exclude_from_template": [
             "cocos-project-template.json",
             "platforms",
             "common"
         ]
     },
-    "do_add_native_support": {
-        "append_file": [{
-            "from": "cocos/bindings/manual/jsb_module_register.cpp",
+    "doAddNativeSupport": {
+        "appendFile": [{
+            "from": "cocos/scripting/js-bindings/manual/jsb_module_register.cpp",
             "to": "${COMMON_DIR}/Classes/jsb_module_register.cpp"
         }],
-        "project_replace_project_name": {
-            "src_project_name": "HelloJavascript",
+        "projectReplaceProjectName": {
+            "srcProjectName": "HelloJavascript",
             "files": [
                 "proj/main.cpp",
                 "proj/settings.gradle",
@@ -21,44 +21,42 @@
                 "${COMMON_DIR}/CMakeLists.txt"
             ]
         },
-        "append_x_engine": {
+        "appendXEngine": {
             "from": ".",
             "to": "${COMMON_DIR}/cocos2d-x"
         },
-        "project_replace_package_name": {
-            "src_package_name": "org.cocos2dx.hellojavascript",
+        "projectReplacePackageName": {
+            "srcPackageName": "org.cocos2dx.hellojavascript",
             "files": [
                 "proj/app/build.gradle",
                 "proj/app/AndroidManifest.xml"
             ]
         },
-        "project_replace_mac_bundleid": {
-            "src_bundle_id": "org.cocos2dx.hellojavascript.mac",
+        "projectReplaceMacBundleid": {
+            "srcBundleId": "org.cocos2dx.hellojavascript.mac",
             "files": [
                 "${COMMON_DIR}/CMakeLists.txt"
             ]
         },
-        "project_replace_ios_bundleid": {
-            "src_bundle_id": "org.cocos2dx.hellojavascript.ios",
+        "projectReplaceIosBundleid": {
+            "srcBundleId": "org.cocos2dx.hellojavascript.ios",
             "files": [
                 "${COMMON_DIR}/CMakeLists.txt"
             ]
         },
-        "project_replace_cocos_x_root": {
+        "projectReplaceCocosXRoot": {
             "pattern":"\\$\\{COCOS_X_ROOT\\}",
             "files": [
                 {"file": "${COMMON_DIR}/CMakeLists.txt", "default":"${CMAKE_CURRENT_LIST_DIR}/cocos2d-x", "needFix":true},
                 {"file": "proj/settings.gradle", "default":"${COMMON_DIR}/cocos2d-x", "needFix":true},
                 {"file": "proj/app/build.gradle", "default":"${COMMON_DIR}/cocos2d-x", "needFix":true},
-                {"file": "proj/game/build.gradle", "default":"${COMMON_DIR}/cocos2d-x", "needFix":true},
                 "proj/build-cfg.json"
             ]
         },
-        "project_replace_projec_common" : {
+        "projectReplaceProjectCommon" : {
             "pattern":"\\$\\{COCOS_PROJ_COMMON\\}",
             "files":[
-                "proj/app/build.gradle",
-                "proj/game/build.gradle"
+                "proj/app/build.gradle"
             ]
         }
     }
