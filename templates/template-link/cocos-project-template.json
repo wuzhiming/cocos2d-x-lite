@@ -26,20 +26,20 @@
             "to": "${COMMON_DIR}/cocos2d-x"
         },
         "projectReplacePackageName": {
-            "srcPackageName": "org.cocos2dx.hellojavascript",
+            "srcPackageName": "com.cocos.helloworld",
             "files": [
                 "proj/app/build.gradle",
                 "proj/app/AndroidManifest.xml"
             ]
         },
         "projectReplaceMacBundleid": {
-            "srcBundleId": "org.cocos2dx.hellojavascript.mac",
+            "srcBundleId": "com.cocos.helloworld.mac",
             "files": [
                 "${COMMON_DIR}/CMakeLists.txt"
             ]
         },
         "projectReplaceIosBundleid": {
-            "srcBundleId": "org.cocos2dx.hellojavascript.ios",
+            "srcBundleId": "com.cocos.helloworld.ios",
             "files": [
                 "${COMMON_DIR}/CMakeLists.txt"
             ]
