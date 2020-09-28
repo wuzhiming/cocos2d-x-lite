@@ -8,7 +8,7 @@
     },
     "doAddNativeSupport": {
         "appendFile": [{
-            "from": "cocos/scripting/js-bindings/manual/jsb_module_register.cpp",
+            "from": "cocos/bindings/manual/jsb_module_register.cpp",
             "to": "${COMMON_DIR}/Classes/jsb_module_register.cpp"
         }],
         "projectReplaceProjectName": {
@@ -44,19 +44,21 @@
                 "${COMMON_DIR}/CMakeLists.txt"
             ]
         },
-        "projectReplaceCocosXRoot": {
-            "pattern":"\\$\\{COCOS_X_ROOT\\}",
+        "projectReplaceCocosRoot": {
+            "pattern":"\\$\\{COCOS_ROOT\\}",
             "files": [
                 {"file": "${COMMON_DIR}/CMakeLists.txt", "default":"${CMAKE_CURRENT_LIST_DIR}/cocos2d-x", "needFix":true},
                 {"file": "proj/settings.gradle", "default":"${COMMON_DIR}/cocos2d-x", "needFix":true},
                 {"file": "proj/app/build.gradle", "default":"${COMMON_DIR}/cocos2d-x", "needFix":true},
+                {"file": "proj/game/build.gradle", "default":"${COMMON_DIR}/cocos2d-x", "needFix":true},
                 "proj/build-cfg.json"
             ]
         },
         "projectReplaceProjectCommon" : {
             "pattern":"\\$\\{COCOS_PROJ_COMMON\\}",
             "files":[
-                "proj/app/build.gradle"
+                "proj/app/build.gradle",
+                "proj/game/build.gradle"
             ]
         }
     }
