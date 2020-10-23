@@ -38,6 +38,7 @@ class View
 public:
 	static void engineHandleCmd(struct android_app* app, int32_t cmd);
 	static int32_t engineHandleInput(struct android_app* app, AInputEvent* event);
+	static void handleTouchEventByJava(int index, int type,float x,float y);
 };
 
 }

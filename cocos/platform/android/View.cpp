@@ -57,6 +57,14 @@ namespace
         touchEvent.touches.clear();
     }
 
+    void dispatchTouchEventByJava(int index,cc::TouchEvent::Type type, float x,float y) {
+        touchEvent.touches.push_back({x, y, index});
+        touchEvent.type =  type;
+
+        cc::EventDispatcher::dispatchTouchEvent(touchEvent);
+        touchEvent.touches.clear();
+    }
+
     void dispatchTouchEvents(AInputEvent* event, cc::TouchEvent& touchEvent) {
         size_t pointerCount = AMotionEvent_getPointerCount(event);
         for (size_t i = 0; i < pointerCount; ++i) {
@@ -73,6 +81,11 @@ namespace
 }
 
 namespace cc {
+
+void View::handleTouchEventByJava(int index,int type, float x, float y)
+{
+    dispatchTouchEventByJava(index,(cc::TouchEvent::Type)type, x, y);
+}
 
 void View::engineHandleCmd(struct android_app* app, int32_t cmd)
 {

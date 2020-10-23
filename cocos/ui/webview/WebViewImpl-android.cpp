@@ -31,6 +31,7 @@
 
 #include "platform/FileUtils.h"
 #include "platform/android/jni/JniHelper.h"
+#include "platform/android/View.h"
 
 
 static const std::string className = "org/cocos2dx/lib/Cocos2dxWebViewHelper";
@@ -78,6 +79,29 @@ Java_org_cocos2dx_lib_Cocos2dxWebViewHelper_shouldStartLoading(JNIEnv *env, jcla
     return cc::WebViewImpl::shouldStartLoading(index, url);
 }
 
+JNIEXPORT void JNICALL
+Java_org_cocos2dx_javascript_TestActivity_handleTouchEvent(JNIEnv *jenv, jclass, jobject motionEvent) {
+    jclass motionEventClass = jenv->GetObjectClass(motionEvent);
+
+    jmethodID pointersCountMethodId = jenv->GetMethodID(motionEventClass, "getPointerCount", "()I");
+    int pointersCount = jenv->CallIntMethod(motionEvent, pointersCountMethodId);
+    jmethodID getActionMethodId = jenv->GetMethodID(motionEventClass, "getAction", "()I");
+    int32_t action = jenv->CallIntMethod(motionEvent, getActionMethodId);
+
+    jmethodID getXMethodId = jenv->GetMethodID(motionEventClass, "getX", "(I)F");
+    float x0 = jenv->CallFloatMethod(motionEvent, getXMethodId, 0);
+
+    jmethodID getYMethodId = jenv->GetMethodID(motionEventClass, "getY", "(I)F");
+    float y0 = jenv->CallFloatMethod(motionEvent, getYMethodId, 0);
+
+    float x1 = 0;
+    float y1 = 0;
+    if (pointersCount > 1) {
+        x1 = jenv->CallFloatMethod(motionEvent, getXMethodId, 1);
+        y1 = jenv->CallFloatMethod(motionEvent, getYMethodId, 1);
+    }
+    cc::View::handleTouchEventByJava(action, action, x0, y0);
+}
 /*
  * Class:     org_cocos2dx_lib_Cocos2dxWebViewHelper
  * Method:    didFinishLoading
