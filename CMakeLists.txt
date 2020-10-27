@@ -436,6 +436,8 @@ elseif(ANDROID)
         cocos/platform/android/jni/JniHelper.h
         cocos/platform/android/jni/JniImp.cpp
         cocos/platform/android/jni/JniImp.h
+        cocos/platform/android/jni/JniCocosActivity.cpp
+        cocos/platform/android/jni/JniCocosActivity.h
     )
 elseif(APPLE)
     cocos_source_files(

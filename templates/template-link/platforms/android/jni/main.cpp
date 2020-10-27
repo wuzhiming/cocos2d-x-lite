@@ -73,40 +73,50 @@ void handle_cmd(struct android_app* app, int32_t cmd)
     cc::View::engineHandleCmd(app, cmd);
 }
 
-void android_main(struct android_app* state) {
-    struct SavedState savedState;
-    memset(&savedState, 0, sizeof(savedState));
-    state->userData = &savedState;
-    state->onAppCmd = handle_cmd;
-    state->onInputEvent = cc::View::engineHandleInput;
-    savedState.app = state;
-    cc::JniHelper::setAndroidApp(state);
+// void android_main(struct android_app* state) {
+//     struct SavedState savedState;
+//     memset(&savedState, 0, sizeof(savedState));
+//     state->userData = &savedState;
+//     state->onAppCmd = handle_cmd;
+//     state->onInputEvent = cc::View::engineHandleInput;
+//     savedState.app = state;
+//     cc::JniHelper::setAndroidApp(state);
 
-    while (1)
-    {
-        // Read all pending events.
-        int ident;
-        int events;
-        struct android_poll_source* source;
+//     while (1)
+//     {
+//         // Read all pending events.
+//         int ident;
+//         int events;
+//         struct android_poll_source* source;
 
-        // If not animating, we will block forever waiting for events.
-        // If animating, we loop until all events are read, then continue
-        // to draw the next frame of animation.
-        while ((ident = ALooper_pollAll(savedState.animating ? 0 : -1, NULL, &events,
-                                        (void**)&source)) >= 0)
-        {
+//         // If not animating, we will block forever waiting for events.
+//         // If animating, we loop until all events are read, then continue
+//         // to draw the next frame of animation.
+//         while ((ident = ALooper_pollAll(savedState.animating ? 0 : -1, NULL, &events,
+//                                         (void**)&source)) >= 0)
+//         {
 
-            // Process this event.
-            if (source != nullptr)
-                source->process(state, source);
-        }
+//             // Process this event.
+//             if (source != nullptr)
+//                 source->process(state, source);
+//         }
 
-        if (state->destroyRequested != 0)
-            return;
+//         if (state->destroyRequested != 0)
+//             return;
 
-        cc::JniHelper::callStaticVoidMethod("org.cocos2dx.lib.Cocos2dxHelper", "flushTasksOnGameThread");
+//         cc::JniHelper::callStaticVoidMethod("org.cocos2dx.lib.Cocos2dxHelper", "flushTasksOnGameThread");
 
-        if (savedState.animating)
-            game->tick();
+//         if (savedState.animating)
+//             game->tick();
+//     }
+// }
+
+void cocos_main(ANativeWindow *window) {
+    auto width = ANativeWindow_getWidth(window);
+    auto height = ANativeWindow_getHeight(window);
+    game = new Game(width, height);
+    game->init();
+    while (1) {
+        game->tick();
     }
 }

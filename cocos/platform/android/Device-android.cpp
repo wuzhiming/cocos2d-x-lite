@@ -34,7 +34,7 @@ THE SOFTWARE.
 #include <android_native_app_glue.h>
 #include <android/window.h>
 #include <android/sensor.h>
-#include "platform/android/jni/JniHelper.h"
+#include "platform/android/jni/JniCocosActivity.h"
 #include "platform/FileUtils.h"
 #include "base/UTF8.h"
 
@@ -58,21 +58,21 @@ namespace {
 
         Sensor()
         {
-            sensorManager = ASensorManager_getInstance();
-            if (!sensorManager)
-                return;
-
-            accelerometerSensor = ASensorManager_getDefaultSensor(sensorManager, ASENSOR_TYPE_ACCELEROMETER);
-            linearAccelerometerSensor = ASensorManager_getDefaultSensor(sensorManager, ASENSOR_TYPE_LINEAR_ACCELERATION);
-            gyroscopeSensor = ASensorManager_getDefaultSensor(sensorManager, ASENSOR_TYPE_GYROSCOPE);
-
-            android_app* app = cc::JniHelper::getAndroidApp();
-            sensorEventQueue = ASensorManager_createEventQueue(sensorManager, app->looper, 3, getSensorEvents, NULL);
-            if (!sensorEventQueue)
-                return;
-
-            delay = SENSOR_EVENT_DELAY;
-            enable();
+//            sensorManager = ASensorManager_getInstance();
+//            if (!sensorManager)
+//                return;
+//
+//            accelerometerSensor = ASensorManager_getDefaultSensor(sensorManager, ASENSOR_TYPE_ACCELEROMETER);
+//            linearAccelerometerSensor = ASensorManager_getDefaultSensor(sensorManager, ASENSOR_TYPE_LINEAR_ACCELERATION);
+//            gyroscopeSensor = ASensorManager_getDefaultSensor(sensorManager, ASENSOR_TYPE_GYROSCOPE);
+//
+//            android_app* app = cc::JniHelper::getAndroidApp();
+//            sensorEventQueue = ASensorManager_createEventQueue(sensorManager, app->looper, 3, getSensorEvents, NULL);
+//            if (!sensorEventQueue)
+//                return;
+//
+//            delay = SENSOR_EVENT_DELAY;
+//            enable();
         }
 
         ~Sensor() {
@@ -153,7 +153,7 @@ int Device::getDPI()
     if (dpi == -1)
     {
         AConfiguration* config = AConfiguration_new();
-        AConfiguration_fromAssetManager(config, JniHelper::getAndroidApp()->activity->assetManager);
+        AConfiguration_fromAssetManager(config, cocosApp.assetManager);
         int32_t density = AConfiguration_getDensity(config);
         AConfiguration_delete(config);
         dpi = density * 160;
@@ -203,7 +203,7 @@ std::string Device::getDeviceModel()
 void Device::setKeepScreenOn(bool value)
 {
     // JniHelper::callStaticVoidMethod(JCLS_HELPER, "setKeepScreenOn", value);
-    ANativeActivity_setWindowFlags(JniHelper::getAndroidApp()->activity, AWINDOW_FLAG_KEEP_SCREEN_ON, 0);
+//    ANativeActivity_setWindowFlags(JniHelper::getAndroidApp()->activity, AWINDOW_FLAG_KEEP_SCREEN_ON, 0);
 }
 
 void Device::vibrate(float duration)
