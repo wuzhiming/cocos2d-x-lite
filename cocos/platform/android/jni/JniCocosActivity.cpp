@@ -42,10 +42,49 @@ JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onCreateNative(JNIEnv
 }
 
 JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onSurfaceCreatedNative(JNIEnv *env, jobject obj, jobject surface) {
+    if(cc::Application::getInstance()) return;
     cc::cocosApp.window = ANativeWindow_fromSurface(env, surface);
 
     std::thread glThread(cc::glThreadEntry, cc::cocosApp.window);
     glThread.detach();
+}
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onStartNative(JNIEnv *env, jobject obj) {
+
+}
+
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onPauseNative(JNIEnv *env, jobject obj) {
+    cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+    	cc::onPaused = true;
+	    cc::Application::getInstance()->onPause();
+    });
+}
+
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onResumeNative(JNIEnv *env, jobject obj) {
+    if(!cc::Application::getInstance()->getScheduler()) return;
+    cc::onPaused = false;
+    cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
+	    cc::Application::getInstance()->onResume();
+    });
+}
+
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onStopNative(JNIEnv *env, jobject obj) {
+
+}
+
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onLowMemoryNative(JNIEnv *env, jobject obj) {
+
+}
+
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onWindowFocusChangedNative(JNIEnv *env, jobject obj, jboolean has_focus) {
+
+}
+
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onSurfaceChangedNative(JNIEnv *env, jobject obj, jint width, jint height) {
+
+}
+
+JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onSurfaceDestroyNative(JNIEnv *env, jobject obj) {
+
 }
 
 }
