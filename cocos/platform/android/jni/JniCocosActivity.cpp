@@ -54,14 +54,12 @@ JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onStartNative(JNIEnv 
 
 JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onPauseNative(JNIEnv *env, jobject obj) {
     cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
-    	cc::onPaused = true;
 	    cc::Application::getInstance()->onPause();
     });
 }
 
 JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosActivity_onResumeNative(JNIEnv *env, jobject obj) {
     if(!cc::Application::getInstance()->getScheduler()) return;
-    cc::onPaused = false;
     cc::Application::getInstance()->getScheduler()->performFunctionInCocosThread([=](){
 	    cc::Application::getInstance()->onResume();
     });

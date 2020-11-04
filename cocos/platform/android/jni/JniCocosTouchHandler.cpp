@@ -2,29 +2,27 @@
 #include "platform/Application.h"
 #include <jni.h>
 #include <android/log.h>
-#include "android/View.h"
-#include "android/jni/JniCocosTouchHandler.h"
+
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, "CocosTouchHandler JNI", __VA_ARGS__)
 
 namespace {
     struct cc::TouchEvent touchEvent;
-    struct cc::KeyboardEvent keyboardEvent;
 }
 extern "C" {
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosTouchHandler_handleActionDown(JNIEnv *env, jobject obj, jint id,
                                                              jfloat x, jfloat y) {
-        cc::TouchEvent touchEvent;
         touchEvent.type = cc::TouchEvent::Type::BEGAN;
         touchEvent.touches.emplace_back(x, y, id);
         cc::EventDispatcher::dispatchTouchEvent(touchEvent);
+        touchEvent.touches.clear();
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosTouchHandler_handleActionUp(JNIEnv *env, jobject obj, jint id, jfloat x,
                                                            jfloat y) {
-        cc::TouchEvent touchEvent;
         touchEvent.type = cc::TouchEvent::Type::ENDED;
         touchEvent.touches.emplace_back(x, y, id);
         cc::EventDispatcher::dispatchTouchEvent(touchEvent);
+        touchEvent.touches.clear();
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosTouchHandler_handleActionMove(JNIEnv *env, jobject obj,
@@ -32,7 +30,6 @@ extern "C" {
                                                              jfloatArray xs,
                                                              jfloatArray ys) {
 
-        cc::TouchEvent touchEvent;
         touchEvent.type = cc::TouchEvent::Type::MOVED;
         int size = env->GetArrayLength(ids);
         jint id[size];
@@ -48,13 +45,13 @@ extern "C" {
 
         cc:
         cc::EventDispatcher::dispatchTouchEvent(touchEvent);
+        touchEvent.touches.clear();
     }
 
     JNIEXPORT void JNICALL Java_org_cocos2dx_lib_CocosTouchHandler_handleActionCancel(JNIEnv *env, jobject obj,
                                                                jintArray ids,
                                                                jfloatArray xs,
                                                                jfloatArray ys) {
-        cc::TouchEvent touchEvent;
         touchEvent.type = cc::TouchEvent::Type::CANCELLED;
         int size = env->GetArrayLength(ids);
         jint id[size];
@@ -68,6 +65,7 @@ extern "C" {
             touchEvent.touches.emplace_back(x[i], y[i], id[i]);
         }
         cc::EventDispatcher::dispatchTouchEvent(touchEvent);
+        touchEvent.touches.clear();
     }
 }
 
