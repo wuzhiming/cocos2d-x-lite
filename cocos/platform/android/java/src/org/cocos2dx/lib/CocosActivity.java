@@ -7,6 +7,7 @@ import android.content.res.AssetManager;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -45,6 +46,7 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     private boolean engineInit = false;
 
     private CocosTouchHandler mTouchHandler;
+    private CocosKeyCodeHandler mKeyCodeHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,9 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         initView();
         onCreateNative(this, getAssets(), getAbsolutePath(getObbDir()), Build.VERSION.SDK_INT);
+
         mTouchHandler = new CocosTouchHandler(this);
+        mKeyCodeHandler = new CocosKeyCodeHandler(this);
     }
 
     private static String getAbsolutePath(File file) {
@@ -172,5 +176,15 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return mKeyCodeHandler.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        return mKeyCodeHandler.onKeyUp(keyCode, event) || super.onKeyUp(keyCode, event);
     }
 }
