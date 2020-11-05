@@ -24,6 +24,7 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     private FrameLayout mFrameLayout;
     private SurfaceView mSurfaceView;
     private Cocos2dxWebViewHelper mWebViewHelper = null;
+    private Cocos2dxVideoHelper mVideoHelper = null;
 
 
     private boolean engineInit = false;
@@ -31,7 +32,6 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     private CocosTouchHandler mTouchHandler;
     private CocosKeyCodeHandler mKeyCodeHandler;
     private CocosSensorHandler mSensorHandler;
-
 
 
     private native void onCreateNative(Activity activity, AssetManager assetManager, String obbPath, int sdkVersion);
@@ -88,8 +88,12 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         mSurfaceView.getHolder().addCallback(this);
         mFrameLayout.addView(mSurfaceView);
 
-        if(mWebViewHelper == null){
+        if (mWebViewHelper == null) {
             mWebViewHelper = new Cocos2dxWebViewHelper(mFrameLayout);
+        }
+
+        if (mVideoHelper == null) {
+            mVideoHelper = new Cocos2dxVideoHelper(this, mFrameLayout);
         }
     }
 
