@@ -36,8 +36,17 @@ class TouchEvent;
 class View
 {
 public:
-	static void engineHandleCmd(struct android_app* app, int32_t cmd);
-	static int32_t engineHandleInput(struct android_app* app, AInputEvent* event);
+	static void engineHandleCmd(struct android_app *app, int32_t cmd);
+
+	static int32_t engineHandleInput(struct android_app *app, AInputEvent *event);
+
+	static void handleTouchesBegan(int id, float x, float y);
+
+	static void handleTouchesMoved(int ids[], float xPointerList[], float yPointerList[]);
+
+	static void handleTouchesEnded(int id, float x, float y);
+	static void handleTouchesCanceled(int ids[], float xPointerList[], float yPointerList[]);
+
 };
 
 }

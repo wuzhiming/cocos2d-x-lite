@@ -72,6 +72,10 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         return (file != null) ? file.getAbsolutePath() : null;
     }
 
+    public SurfaceView getmSurfaceView(){
+        return mSurfaceView;
+    }
+
     protected void initView() {
         ViewGroup.LayoutParams frameLayoutParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

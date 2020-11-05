@@ -46,25 +46,17 @@ namespace
             {AKEYCODE_DPAD_CENTER, 1005}
     };
 
-	void dispatchTouchEvent(int index, AInputEvent* event, cc::TouchEvent& touchEvent) {
-        int pointerID = AMotionEvent_getPointerId(event, index);
-        touchEvent.touches.push_back({
-            AMotionEvent_getX(event, index), // x
-            AMotionEvent_getY(event, index), // y
-            pointerID});
+	void dispatchTouchEvent(int pointerID, float x, float y) {
 
+        touchEvent.touches.emplace_back(x, y, pointerID);
         cc::EventDispatcher::dispatchTouchEvent(touchEvent);
         touchEvent.touches.clear();
     }
 
-    void dispatchTouchEvents(AInputEvent* event, cc::TouchEvent& touchEvent) {
-        size_t pointerCount = AMotionEvent_getPointerCount(event);
+    void dispatchTouchEvents(int ids[],float xPointerList[] ,float yPointerList[]) {
+        size_t pointerCount = sizeof(ids);
         for (size_t i = 0; i < pointerCount; ++i) {
-            touchEvent.touches.push_back({
-                AMotionEvent_getX(event, i),
-                AMotionEvent_getY(event, i),
-                AMotionEvent_getPointerId(event, i)
-            });
+            touchEvent.touches.emplace_back(xPointerList[i], yPointerList[i], ids[i]);
         }
 
         cc::EventDispatcher::dispatchTouchEvent(touchEvent);
@@ -111,12 +103,31 @@ void View::engineHandleCmd(struct android_app* app, int32_t cmd)
             break;
 	}
 }
+void View::handleTouchesBegan(int id,float x ,float y){
+    touchEvent.type = cc::TouchEvent::Type::BEGAN;
+    dispatchTouchEvent(id, x, y);
+}
 
+void View::handleTouchesMoved(int ids[],float xPointerList[] ,float yPointerList[]){
+    touchEvent.type = cc::TouchEvent::Type::MOVED;
+    dispatchTouchEvents(ids, xPointerList, yPointerList);
+}
+
+void View::handleTouchesEnded(int id,float x ,float y){
+    touchEvent.type = cc::TouchEvent::Type::ENDED;
+    dispatchTouchEvent(id, x, y);
+}
+
+void View::handleTouchesCanceled(int ids[],float xPointerList[] ,float yPointerList[]){
+    touchEvent.type = cc::TouchEvent::Type::CANCELLED;
+    dispatchTouchEvents(ids, xPointerList, yPointerList);
+}
 /**
  * Process the next input event.
  */
 int32_t View::engineHandleInput(struct android_app* app, AInputEvent* event) {
-    int type = AInputEvent_getType(event);
+    return 1;
+    /*int type = AInputEvent_getType(event);
 
     if(type == AINPUT_EVENT_TYPE_KEY){
         int action = AKeyEvent_getAction(event);
@@ -175,7 +186,8 @@ int32_t View::engineHandleInput(struct android_app* app, AInputEvent* event) {
         return 1;
     }
 
-    return 0;
+    return 0;*/
 }
 
 }
+

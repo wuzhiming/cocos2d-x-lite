@@ -11,9 +11,9 @@
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, "CocosActivity JNI", __VA_ARGS__)
 
 cc::Application *cocos_main(int, int) __attribute__((weak));
-
 namespace cc {
 CocosApp cocosApp;
+bool onPaused = false;
 
 void glThreadEntry(ANativeWindow *window) {
 	int width = ANativeWindow_getWidth(window);
@@ -23,6 +23,7 @@ void glThreadEntry(ANativeWindow *window) {
 	if (!game) return;
 
 	while (1) {
+	    if(onPaused) continue;
 	    LOGD("tick .......");
 		JniHelper::callStaticVoidMethod("org.cocos2dx.lib.Cocos2dxHelper", "flushTasksOnGameThread");
 		game->tick();

@@ -97,3 +97,7 @@ void copyTextToClipboardJNI(const std::string& text)
 {
     JniHelper::callStaticVoidMethod(JCLS_HELPER, "copyTextToClipboard", text);
 }
+
+extern "C" {
+    
+}
