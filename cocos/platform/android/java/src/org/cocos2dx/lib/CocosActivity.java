@@ -19,6 +19,17 @@ import android.widget.FrameLayout;
 import java.io.File;
 
 public class CocosActivity extends Activity implements SurfaceHolder.Callback {
+    private boolean mDestroyed;
+    private SurfaceHolder mSurfaceHolder;
+    private FrameLayout mFrameLayout;
+    private SurfaceView mSurfaceView;
+    private boolean engineInit = false;
+
+    private CocosTouchHandler mTouchHandler;
+    private CocosKeyCodeHandler mKeyCodeHandler;
+    private CocosSensorHandler mSensorHandler;
+
+
     private native void onCreateNative(Activity activity, AssetManager assetManager, String obbPath, int sdkVersion);
 
     private native void onSurfaceCreatedNative(Surface surface);
@@ -39,15 +50,6 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
 
     private native void onWindowFocusChangedNative(boolean hasFocus);
 
-    private boolean mDestroyed;
-    private SurfaceHolder mSurfaceHolder;
-    private FrameLayout mFrameLayout;
-    private SurfaceView mSurfaceView;
-    private boolean engineInit = false;
-
-    private CocosTouchHandler mTouchHandler;
-    private CocosKeyCodeHandler mKeyCodeHandler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,7 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
 
         mTouchHandler = new CocosTouchHandler(this);
         mKeyCodeHandler = new CocosKeyCodeHandler(this);
+        mSensorHandler = new CocosSensorHandler(this);
     }
 
     private static String getAbsolutePath(File file) {
@@ -103,12 +106,14 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     @Override
     protected void onPause() {
         super.onPause();
+        mSensorHandler.onPause();
         onPauseNative();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mSensorHandler.onResume();
         onResumeNative();
     }
 
