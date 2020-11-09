@@ -23,10 +23,12 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.util.Log;
 import android.view.MotionEvent;
+
+import com.cocos.lib.BuildConfig;
 
 public class CocosTouchHandler {
     public final static String TAG = "CocosTouchHandler";

@@ -23,7 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.util.Log;
 

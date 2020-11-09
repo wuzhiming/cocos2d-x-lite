@@ -21,7 +21,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.app.Activity;
 

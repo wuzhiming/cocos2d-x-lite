@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  ****************************************************************************/
 
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.graphics.Rect;
 import android.os.Handler;
@@ -35,7 +35,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.app.Activity;
 
-import org.cocos2dx.lib.Cocos2dxVideoView.OnVideoEventListener;
+import com.cocos.lib.Cocos2dxVideoView.OnVideoEventListener;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.Callable;

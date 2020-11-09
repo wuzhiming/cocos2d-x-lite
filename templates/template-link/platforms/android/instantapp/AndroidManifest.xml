@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.cocos2dx.lib.Cocos2dxEditBoxActivity"
+            android:name="com.cocos.lib.Cocos2dxEditBoxActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />

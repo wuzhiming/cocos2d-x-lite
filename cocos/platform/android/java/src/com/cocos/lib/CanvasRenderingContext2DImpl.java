@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  ****************************************************************************/
 
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.content.Context;
 import android.graphics.Bitmap;

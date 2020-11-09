@@ -23,7 +23,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
  ****************************************************************************/
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -54,6 +54,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.app.Activity;
 import android.content.Intent;
+
+import com.cocos.lib.R;
 
 public class Cocos2dxEditBoxActivity extends Activity {
 

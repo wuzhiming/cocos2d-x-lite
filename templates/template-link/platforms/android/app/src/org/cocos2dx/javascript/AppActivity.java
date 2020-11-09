@@ -28,7 +28,7 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import org.cocos2dx.lib.CocosActivity;
+import com.cocos.lib.CocosActivity;
 
 public class AppActivity extends CocosActivity {
 

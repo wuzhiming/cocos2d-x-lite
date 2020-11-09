@@ -21,7 +21,7 @@
  * THE SOFTWARE.
  */
 
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 public class Cocos2dxJavascriptJavaBridge {
     public static native int evalString(String value);

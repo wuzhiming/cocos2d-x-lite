@@ -23,15 +23,13 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.cocos2dx.lib;
+package com.cocos.lib;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
