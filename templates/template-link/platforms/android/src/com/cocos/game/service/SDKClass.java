@@ -1,4 +1,4 @@
-package org.cocos2dx.javascript.service;
+package com.cocos.game.service;
 
 import android.content.Context;
 import android.content.Intent;

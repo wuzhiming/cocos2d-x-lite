@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2015-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
+
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +22,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-package org.cocos2dx.javascript;
+package com.cocos.game;
 
 import android.os.Bundle;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import android.content.res.Configuration;
 
 import com.cocos.lib.CocosActivity;
 
-public class AppActivity extends CocosActivity {
+public class InstantActivity extends CocosActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class AppActivity extends CocosActivity {
         super.onStop();
         SDKWrapper.getInstance().onStop();
     }
-        
+
     @Override
     public void onBackPressed() {
         SDKWrapper.getInstance().onBackPressed();
