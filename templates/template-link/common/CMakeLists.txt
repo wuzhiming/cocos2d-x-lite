@@ -46,7 +46,7 @@ include(${cocosdir}/CMakeLists.txt)
 
 
 if(ANDROID)
-    set(LIB_NAME cocos2djs)
+    set(LIB_NAME cocos)
     set(PLATFORM_DIR_NAME "android")
 elseif(MACOSX)
     set(LIB_NAME ${APP_NAME}-desktop)

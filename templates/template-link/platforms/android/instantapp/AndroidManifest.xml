@@ -19,7 +19,7 @@
                 android:value="1" />
         <!-- Tell CocosNativeActivity the name of our .so -->
         <meta-data android:name="android.app.lib_name"
-                   android:value="cocos2djs" />
+                   android:value="cocos" />
         <activity
                 android:name="org.cocos2dx.javascript.AppActivity"
                 android:screenOrientation="landscape"
