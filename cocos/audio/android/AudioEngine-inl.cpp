@@ -57,7 +57,7 @@
 
 using namespace cc;
 
-// Audio focus values synchronized with which in cocos/platform/android/java/src/com/cocos/lib/Cocos2dxActivity.java
+// Audio focus values synchronized with which in cocos/platform/android/java/src/com/cocos/lib/CocosNativeActivity.java
 namespace
 {
     AudioEngineImpl* __impl = nullptr;

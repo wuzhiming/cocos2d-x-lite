@@ -23,6 +23,6 @@
 
 package com.cocos.lib;
 
-public class Cocos2dxJavascriptJavaBridge {
+public class CocosJavascriptJavaBridge {
     public static native int evalString(String value);
 }

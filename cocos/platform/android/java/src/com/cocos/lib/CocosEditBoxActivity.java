@@ -55,15 +55,13 @@ import android.widget.TextView;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.cocos.lib.R;
-
-public class Cocos2dxEditBoxActivity extends Activity {
+public class CocosEditBoxActivity extends Activity {
 
     // a color of dark green, was used for confirm button background
     private static final int DARK_GREEN = Color.parseColor("#1fa014");
     private static final int DARK_GREEN_PRESS = Color.parseColor("#008e26");
 
-    private static Cocos2dxEditBoxActivity sThis = null;
+    private static CocosEditBoxActivity sThis = null;
     private Cocos2dxEditText mEditText = null;
     private Button mButton = null;
     private String mButtonTitle = null;
@@ -112,7 +110,7 @@ public class Cocos2dxEditBoxActivity extends Activity {
                 @Override
                 public void afterTextChanged(Editable s) {
                     // Pass text to c++.
-                    Cocos2dxEditBoxActivity.this.onKeyboardInput(s.toString());
+                    CocosEditBoxActivity.this.onKeyboardInput(s.toString());
                 }
             };
             registKeyboardVisible();
@@ -211,7 +209,7 @@ public class Cocos2dxEditBoxActivity extends Activity {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (! mIsMultiLine) {
-                        Cocos2dxEditBoxActivity.this.hide();
+                        CocosEditBoxActivity.this.hide();
                     }
 
                     return false; // pass on to other listeners.
@@ -242,7 +240,7 @@ public class Cocos2dxEditBoxActivity extends Activity {
                     } else {
                         if (keyboardVisible) {
                             keyboardVisible = false;
-                            Cocos2dxEditBoxActivity.this.hide();
+                            CocosEditBoxActivity.this.hide();
                         }
                     }
                 }
@@ -255,7 +253,7 @@ public class Cocos2dxEditBoxActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Cocos2dxEditBoxActivity.sThis = this;
+        CocosEditBoxActivity.sThis = this;
 
         ViewGroup.LayoutParams frameLayoutParams =
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -334,10 +332,10 @@ public class Cocos2dxEditBoxActivity extends Activity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cocos2dxEditBoxActivity.this.onKeyboardConfirm(mEditText.getText().toString());
+                CocosEditBoxActivity.this.onKeyboardConfirm(mEditText.getText().toString());
 
-                if (!Cocos2dxEditBoxActivity.this.mConfirmHold)
-                    Cocos2dxEditBoxActivity.this.hide();
+                if (!CocosEditBoxActivity.this.mConfirmHold)
+                    CocosEditBoxActivity.this.hide();
             }
         });
     }
@@ -409,7 +407,7 @@ public class Cocos2dxEditBoxActivity extends Activity {
         GlobalObject.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(GlobalObject.getActivity(), Cocos2dxEditBoxActivity.class);
+                Intent i = new Intent(GlobalObject.getActivity(), CocosEditBoxActivity.class);
                 i.putExtra("defaultValue", defaultValue);
                 i.putExtra("maxLength", maxLength);
                 i.putExtra("isMultiline", isMultiline);
@@ -422,11 +420,11 @@ public class Cocos2dxEditBoxActivity extends Activity {
     }
 
     private static void hideNative() {
-        if (null != Cocos2dxEditBoxActivity.sThis) {
+        if (null != CocosEditBoxActivity.sThis) {
             GlobalObject.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Cocos2dxEditBoxActivity.sThis.hide();
+                    CocosEditBoxActivity.sThis.hide();
                 }
             });
         }
@@ -436,28 +434,28 @@ public class Cocos2dxEditBoxActivity extends Activity {
      Native functions invoked by UI.
      **************************************************************************************/
     private void onKeyboardInput(String text) {
-        Cocos2dxHelper.runOnGameThread(new Runnable() {
+        CocosHelper.runOnGameThread(new Runnable() {
             @Override
             public void run() {
-                Cocos2dxEditBoxActivity.onKeyboardInputNative(text);
+                CocosEditBoxActivity.onKeyboardInputNative(text);
             }
         });
     }
 
     private void onKeyboardComplete(String text) {
-        Cocos2dxHelper.runOnGameThread(new Runnable() {
+        CocosHelper.runOnGameThread(new Runnable() {
             @Override
             public void run() {
-                Cocos2dxEditBoxActivity.onKeyboardCompleteNative(text);
+                CocosEditBoxActivity.onKeyboardCompleteNative(text);
             }
         });
     }
 
     private void onKeyboardConfirm(String text) {
-        Cocos2dxHelper.runOnGameThread(new Runnable() {
+        CocosHelper.runOnGameThread(new Runnable() {
             @Override
             public void run() {
-                Cocos2dxEditBoxActivity.onKeyboardConfirmNative(text);
+                CocosEditBoxActivity.onKeyboardConfirmNative(text);
             }
         });
     }

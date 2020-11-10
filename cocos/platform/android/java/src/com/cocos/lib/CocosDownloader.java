@@ -52,7 +52,7 @@ import org.cocos2dx.okhttp3.OkHttpClient;
 import org.cocos2dx.okhttp3.Request;
 import org.cocos2dx.okhttp3.Response;
 
-public class Cocos2dxDownloader {
+public class CocosDownloader {
 
     private int _id;
     private OkHttpClient _httpClient = null;
@@ -65,7 +65,7 @@ public class Cocos2dxDownloader {
     private static ConcurrentHashMap<String, Boolean> _resumingSupport = new ConcurrentHashMap<>();
 
     private void onProgress(final int id, final long downloadBytes, final long downloadNow, final long downloadTotal) {
-        Cocos2dxHelper.runOnGameThread(new Runnable() {
+        CocosHelper.runOnGameThread(new Runnable() {
             @Override
             public void run() {
                 nativeOnProgress(_id, id, downloadBytes, downloadNow, downloadTotal);
@@ -78,7 +78,7 @@ public class Cocos2dxDownloader {
         if (null == task) return;
         _taskMap.remove(id);
         _runningTaskCount -= 1;
-        Cocos2dxHelper.runOnGameThread(new Runnable() {
+        CocosHelper.runOnGameThread(new Runnable() {
             @Override
             public void run() {
                 nativeOnFinish(_id, id, errCode, errStr, data);
@@ -87,8 +87,8 @@ public class Cocos2dxDownloader {
         runNextTaskIfExists();
     }
 
-    public static Cocos2dxDownloader createDownloader(int id, int timeoutInSeconds, String tempFileSuffix, int maxProcessingTasks) {
-        Cocos2dxDownloader downloader = new Cocos2dxDownloader();
+    public static CocosDownloader createDownloader(int id, int timeoutInSeconds, String tempFileSuffix, int maxProcessingTasks) {
+        CocosDownloader downloader = new CocosDownloader();
         downloader._id = id;
 
         if (timeoutInSeconds > 0) {
@@ -110,7 +110,7 @@ public class Cocos2dxDownloader {
         return downloader;
     }
 
-    public static void createTask(final Cocos2dxDownloader downloader, int id_, String url_, String path_, String []header_) {
+    public static void createTask(final CocosDownloader downloader, int id_, String url_, String path_, String []header_) {
         final int id = id_;
         final String url = url_;
         final String path = path_;
@@ -283,7 +283,7 @@ public class Cocos2dxDownloader {
                                         fos.close();
                                     }
                                 } catch (IOException e) {
-                                    Log.e("Cocos2dxDownloader", e.toString());
+                                    Log.e("CocosDownloader", e.toString());
                                 }
                             }
                         }
@@ -292,7 +292,7 @@ public class Cocos2dxDownloader {
 
                 if (null == task) {
                     final String errStr = "Can't create DownloadTask for " + url;
-                    Cocos2dxHelper.runOnGameThread(new Runnable() {
+                    CocosHelper.runOnGameThread(new Runnable() {
                         @Override
                         public void run() {
                             downloader.nativeOnFinish(downloader._id, id, 0, errStr, null);
@@ -306,7 +306,7 @@ public class Cocos2dxDownloader {
         downloader.enqueueTask(taskRunnable);
     }
 
-    public static void abort(final Cocos2dxDownloader downloader, final int id) {
+    public static void abort(final CocosDownloader downloader, final int id) {
         GlobalObject.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -326,7 +326,7 @@ public class Cocos2dxDownloader {
         });
     }
 
-    public static void cancelAllRequests(final Cocos2dxDownloader downloader) {
+    public static void cancelAllRequests(final CocosDownloader downloader) {
         GlobalObject.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -356,9 +356,9 @@ public class Cocos2dxDownloader {
     private void runNextTaskIfExists() {
         synchronized (_taskQueue) {
             while (_runningTaskCount < _countOfMaxProcessingTasks && 
-                Cocos2dxDownloader.this._taskQueue.size() > 0) {
+                CocosDownloader.this._taskQueue.size() > 0) {
                 
-                Runnable taskRunnable = Cocos2dxDownloader.this._taskQueue.poll();
+                Runnable taskRunnable = CocosDownloader.this._taskQueue.poll();
                 GlobalObject.getActivity().runOnUiThread(taskRunnable);
                 _runningTaskCount += 1;
             }

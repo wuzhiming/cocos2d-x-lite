@@ -36,7 +36,7 @@ import android.app.Activity;
 import java.io.IOException;
 import java.util.Map;
 
-public class Cocos2dxVideoView extends SurfaceView {
+public class CocosVideoView extends SurfaceView {
 
     // ===========================================================
     // Internal classes and interfaces.
@@ -67,7 +67,7 @@ public class Cocos2dxVideoView extends SurfaceView {
     // Fields
     // ===========================================================
 
-    private String TAG = "Cocos2dxVideoView";
+    private String TAG = "CocosVideoView";
 
     private Uri         mVideoUri;
     private int         mDuration;
@@ -116,7 +116,7 @@ public class Cocos2dxVideoView extends SurfaceView {
     // Constructors
     // ===========================================================
 
-    public Cocos2dxVideoView(Activity activity, int tag) {
+    public CocosVideoView(Activity activity, int tag) {
         super(activity);
 
         mViewTag = tag;
@@ -454,8 +454,8 @@ public class Cocos2dxVideoView extends SurfaceView {
             }
 
             if(!mMetaUpdated) {
-                Cocos2dxVideoView.this.sendEvent(EVENT_META_LOADED);
-                Cocos2dxVideoView.this.sendEvent(EVENT_READY_TO_PLAY);
+                CocosVideoView.this.sendEvent(EVENT_META_LOADED);
+                CocosVideoView.this.sendEvent(EVENT_READY_TO_PLAY);
                 mMetaUpdated = true;
             }
 
@@ -467,7 +467,7 @@ public class Cocos2dxVideoView extends SurfaceView {
         new MediaPlayer.OnCompletionListener() {
         public void onCompletion(MediaPlayer mp) {
             mCurrentState = State.PLAYBACK_COMPLETED;
-            Cocos2dxVideoView.this.sendEvent(EVENT_COMPLETED);
+            CocosVideoView.this.sendEvent(EVENT_COMPLETED);
         }
     };
 
@@ -515,7 +515,7 @@ public class Cocos2dxVideoView extends SurfaceView {
                                         /* If we get here, there is no onError listener, so
                                          * at least inform them that the video is over.
                                          */
-                                        Cocos2dxVideoView.this.sendEvent(EVENT_COMPLETED);
+                                        CocosVideoView.this.sendEvent(EVENT_COMPLETED);
                                     }
                                 })
                         .setCancelable(false)
@@ -532,7 +532,7 @@ public class Cocos2dxVideoView extends SurfaceView {
 
         public void surfaceCreated(SurfaceHolder holder) {
             mSurfaceHolder = holder;
-            Cocos2dxVideoView.this.openVideo();
+            CocosVideoView.this.openVideo();
 
             if (mPositionBeforeRelease > 0)
                 mMediaPlayer.seekTo(mPositionBeforeRelease);
@@ -542,7 +542,7 @@ public class Cocos2dxVideoView extends SurfaceView {
             // after we return from this we can't use the surface any more
             mSurfaceHolder = null;
             mPositionBeforeRelease = getCurrentPosition();
-            Cocos2dxVideoView.this.release();
+            CocosVideoView.this.release();
         }
     };
 

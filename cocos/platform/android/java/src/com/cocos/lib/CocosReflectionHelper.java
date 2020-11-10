@@ -30,7 +30,7 @@ import android.util.Log;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class Cocos2dxReflectionHelper {
+public class CocosReflectionHelper {
     public static <T> T getConstantValue(final Class aClass, final String constantName) {
         try {
             return (T)aClass.getDeclaredField(constantName).get(null);

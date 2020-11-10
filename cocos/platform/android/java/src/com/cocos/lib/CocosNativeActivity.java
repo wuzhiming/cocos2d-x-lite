@@ -35,12 +35,12 @@ import android.view.WindowManager;
 import android.content.pm.PackageManager;
 import android.content.pm.ApplicationInfo;
 
-public abstract class Cocos2dxActivity extends NativeActivity {
+public abstract class CocosNativeActivity extends NativeActivity {
     // ===========================================================
     // Constants
     // ===========================================================
 
-    private final static String TAG = Cocos2dxActivity.class.getSimpleName();
+    private final static String TAG = CocosNativeActivity.class.getSimpleName();
 
     // ===========================================================
     // Fields
@@ -50,8 +50,8 @@ public abstract class Cocos2dxActivity extends NativeActivity {
 
     protected FrameLayout mFrameLayout = null;
 
-    private Cocos2dxVideoHelper   mVideoHelper   = null;
-    private Cocos2dxWebViewHelper mWebViewHelper = null;
+    private CocosVideoHelper mVideoHelper   = null;
+    private CocosWebViewHelper mWebViewHelper = null;
 
     // ===========================================================
     // Override functions
@@ -59,7 +59,7 @@ public abstract class Cocos2dxActivity extends NativeActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        Log.d(TAG, "Cocos2dxActivity onCreate: " + this + ", savedInstanceState: " + savedInstanceState);
+        Log.d(TAG, "CocosNativeActivity onCreate: " + this + ", savedInstanceState: " + savedInstanceState);
         super.onCreate(savedInstanceState);
 
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
@@ -75,11 +75,11 @@ public abstract class Cocos2dxActivity extends NativeActivity {
         GlobalObject.setActivity(this);
         Utils.hideVirtualButton();
 
-        Cocos2dxHelper.registerBatteryLevelReceiver(this);
+        CocosHelper.registerBatteryLevelReceiver(this);
         // Load native library to enable invoke native API.
         onLoadNativeLibraries();
 
-        Cocos2dxHelper.init(this);
+        CocosHelper.init(this);
         CanvasRenderingContext2DImpl.init(this);
 
 
@@ -95,11 +95,11 @@ public abstract class Cocos2dxActivity extends NativeActivity {
         }
 
         if (mVideoHelper == null) {
-            mVideoHelper = new Cocos2dxVideoHelper(this, mFrameLayout);
+            mVideoHelper = new CocosVideoHelper(this, mFrameLayout);
         }
         
         if (mWebViewHelper == null) {
-            mWebViewHelper = new Cocos2dxWebViewHelper(mFrameLayout);
+            mWebViewHelper = new CocosWebViewHelper(mFrameLayout);
         }
 
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -138,7 +138,7 @@ public abstract class Cocos2dxActivity extends NativeActivity {
         if (!isTaskRoot()) {
             return;
         }
-        Cocos2dxHelper.unregisterBatteryLevelReceiver(this);;
+        CocosHelper.unregisterBatteryLevelReceiver(this);;
         CanvasRenderingContext2DImpl.destroy();
     }
 

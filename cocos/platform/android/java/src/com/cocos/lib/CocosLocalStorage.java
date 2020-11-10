@@ -30,9 +30,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class Cocos2dxLocalStorage {
+public class CocosLocalStorage {
 
-    private static final String TAG = "Cocos2dxLocalStorage";
+    private static final String TAG = "CocosLocalStorage";
 
     private static String DATABASE_NAME = "jsb.sqlite";
     private static String TABLE_NAME = "data";

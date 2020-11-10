@@ -23,8 +23,8 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     private SurfaceHolder mSurfaceHolder;
     private FrameLayout mFrameLayout;
     private SurfaceView mSurfaceView;
-    private Cocos2dxWebViewHelper mWebViewHelper = null;
-    private Cocos2dxVideoHelper mVideoHelper = null;
+    private CocosWebViewHelper mWebViewHelper = null;
+    private CocosVideoHelper mVideoHelper = null;
 
 
     private boolean engineInit = false;
@@ -58,8 +58,8 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GlobalObject.setActivity(this);
-        Cocos2dxHelper.registerBatteryLevelReceiver(this);
-        Cocos2dxHelper.init(this);
+        CocosHelper.registerBatteryLevelReceiver(this);
+        CocosHelper.init(this);
         CanvasRenderingContext2DImpl.init(this);
         onLoadNativeLibraries();
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -89,11 +89,11 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         mFrameLayout.addView(mSurfaceView);
 
         if (mWebViewHelper == null) {
-            mWebViewHelper = new Cocos2dxWebViewHelper(mFrameLayout);
+            mWebViewHelper = new CocosWebViewHelper(mFrameLayout);
         }
 
         if (mVideoHelper == null) {
-            mVideoHelper = new Cocos2dxVideoHelper(this, mFrameLayout);
+            mVideoHelper = new CocosVideoHelper(this, mFrameLayout);
         }
     }
 

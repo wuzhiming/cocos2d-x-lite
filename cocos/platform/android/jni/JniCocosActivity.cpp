@@ -56,7 +56,7 @@ void glThreadEntry(ANativeWindow *window) {
         }
 
         // Handle java events send by UI thread. Input events are handled here too.
-		JniHelper::callStaticVoidMethod("com.cocos.lib.Cocos2dxHelper", "flushTasksOnGameThread");
+		JniHelper::callStaticVoidMethod("com.cocos.lib.CocosHelper", "flushTasksOnGameThread");
 
 		game->tick();
 	}

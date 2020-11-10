@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
 
-        <!-- Tell Cocos2dxActivity the name of our .so -->
+        <!-- Tell CocosNativeActivity the name of our .so -->
         <meta-data android:name="android.app.lib_name"
                    android:value="cocos2djs" />
 
@@ -35,7 +35,7 @@
                 android:value="cocos2djs" />
         </activity>
         <activity
-            android:name="com.cocos.lib.Cocos2dxEditBoxActivity"
+            android:name="com.cocos.lib.CocosEditBoxActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|screenLayout"
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />

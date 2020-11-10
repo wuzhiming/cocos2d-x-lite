@@ -192,7 +192,7 @@ public class CanvasRenderingContext2DImpl {
             paint.setTextSkewX(_sApproximatingOblique);
         }
         if(smallCapsFontVariant && Build.VERSION.SDK_INT >= 21) {
-            Cocos2dxReflectionHelper.<Void>invokeInstanceMethod(paint,
+            CocosReflectionHelper.<Void>invokeInstanceMethod(paint,
                     "setFontFeatureSettings",
                     new Class[]{String.class},
                     new Object[]{"smcp"});
@@ -213,7 +213,7 @@ public class CanvasRenderingContext2DImpl {
         // FIXME: in MIX 2S, its API level is 28, but can not find invokeInstanceMethod. It seems
         // devices may not obey the specification, so comment the codes.
 //        if (Build.VERSION.SDK_INT >= 19) {
-//            Cocos2dxReflectionHelper.<Void>invokeInstanceMethod(mBitmap,
+//            CocosReflectionHelper.<Void>invokeInstanceMethod(mBitmap,
 //                                                    "setPremultiplied",
 //                                                                new Class[]{Boolean.class},
 //                                                                new Object[]{Boolean.FALSE});

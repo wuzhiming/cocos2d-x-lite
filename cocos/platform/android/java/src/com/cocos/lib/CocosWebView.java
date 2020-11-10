@@ -52,23 +52,23 @@ import java.util.concurrent.CountDownLatch;
 
      @Override
      public void run() {
-         this.mResult[0] = Cocos2dxWebViewHelper._shouldStartLoading(mViewTag, mUrlString);
+         this.mResult[0] = CocosWebViewHelper._shouldStartLoading(mViewTag, mUrlString);
          this.mLatch.countDown(); // notify that result is ready
      }
  }
 
- public class Cocos2dxWebView extends WebView {
-     private static final String TAG = Cocos2dxWebViewHelper.class.getSimpleName();
+ public class CocosWebView extends WebView {
+     private static final String TAG = CocosWebViewHelper.class.getSimpleName();
 
      private int mViewTag;
      private String mJSScheme;
 
-     public Cocos2dxWebView(Context context) {
+     public CocosWebView(Context context) {
          this(context, -1);
      }
 
      @SuppressLint("SetJavaScriptEnabled")
-     public Cocos2dxWebView(Context context, int viewTag) {
+     public CocosWebView(Context context, int viewTag) {
          super(context);
          this.mViewTag = viewTag;
          this.mJSScheme = "";
@@ -112,7 +112,7 @@ import java.util.concurrent.CountDownLatch;
                      activity.runOnUiThread(new Runnable() {
                          @Override
                          public void run() {
-                             Cocos2dxWebViewHelper._onJsCallback(mViewTag, urlString);
+                             CocosWebViewHelper._onJsCallback(mViewTag, urlString);
                          }
                      });
                      return true;
@@ -141,10 +141,10 @@ import java.util.concurrent.CountDownLatch;
          public void onPageFinished(WebView view, final String url) {
              super.onPageFinished(view, url);
 
-             Cocos2dxHelper.runOnGameThread(new Runnable() {
+             CocosHelper.runOnGameThread(new Runnable() {
                  @Override
                  public void run() {
-                     Cocos2dxWebViewHelper._didFinishLoading(mViewTag, url);
+                     CocosWebViewHelper._didFinishLoading(mViewTag, url);
                  }
              });
          }
@@ -153,10 +153,10 @@ import java.util.concurrent.CountDownLatch;
          public void onReceivedError(WebView view, int errorCode, String description, final String failingUrl) {
              super.onReceivedError(view, errorCode, description, failingUrl);
 
-             Cocos2dxHelper.runOnGameThread(new Runnable() {
+             CocosHelper.runOnGameThread(new Runnable() {
                  @Override
                  public void run() {
-                     Cocos2dxWebViewHelper._didFailLoading(mViewTag, failingUrl);
+                     CocosWebViewHelper._didFailLoading(mViewTag, failingUrl);
                  }
              });
          }

@@ -34,7 +34,7 @@ import android.app.Activity;
 
 import java.lang.ref.WeakReference;
 
-public class Cocos2dxHandler extends Handler {
+public class CocosHandler extends Handler {
     // ===========================================================
     // Constants
     // ===========================================================
@@ -48,7 +48,7 @@ public class Cocos2dxHandler extends Handler {
     // ===========================================================
     // Constructors
     // ===========================================================
-    public Cocos2dxHandler(Activity activity) {
+    public CocosHandler(Activity activity) {
         this.mActivity = new WeakReference<Activity>(activity);
     }
 
@@ -66,7 +66,7 @@ public class Cocos2dxHandler extends Handler {
 
     public void handleMessage(Message msg) {
         switch (msg.what) {
-        case Cocos2dxHandler.HANDLER_SHOW_DIALOG:
+        case CocosHandler.HANDLER_SHOW_DIALOG:
             showDialog(msg);
             break;
         }

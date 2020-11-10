@@ -41,7 +41,7 @@ public class CocosKeyCodeHandler {
     public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-//                Cocos2dxVideoHelper.mVideoHandler.sendEmptyMessage(Cocos2dxVideoHelper.KeyEventBack);
+//                CocosVideoHelper.mVideoHandler.sendEmptyMessage(CocosVideoHelper.KeyEventBack);
             case KeyEvent.KEYCODE_MENU:
             case KeyEvent.KEYCODE_DPAD_LEFT:
             case KeyEvent.KEYCODE_DPAD_RIGHT:
@@ -50,7 +50,7 @@ public class CocosKeyCodeHandler {
             case KeyEvent.KEYCODE_ENTER:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
             case KeyEvent.KEYCODE_DPAD_CENTER:
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleKeyDown(keyCode);
@@ -73,7 +73,7 @@ public class CocosKeyCodeHandler {
             case KeyEvent.KEYCODE_ENTER:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
             case KeyEvent.KEYCODE_DPAD_CENTER:
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleKeyDown(keyCode);

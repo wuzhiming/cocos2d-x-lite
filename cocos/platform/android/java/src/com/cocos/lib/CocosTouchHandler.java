@@ -28,8 +28,6 @@ package com.cocos.lib;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.cocos.lib.BuildConfig;
-
 public class CocosTouchHandler {
     public final static String TAG = "CocosTouchHandler";
     private boolean mStopHandleTouchAndKeyEvents = false;
@@ -63,7 +61,7 @@ public class CocosTouchHandler {
                 final int idPointerDown = pMotionEvent.getPointerId(indexPointerDown);
                 final float xPointerDown = pMotionEvent.getX(indexPointerDown);
                 final float yPointerDown = pMotionEvent.getY(indexPointerDown);
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleActionDown(idPointerDown, xPointerDown, yPointerDown);
@@ -82,7 +80,7 @@ public class CocosTouchHandler {
                 final float xDown = xs[0];
                 final float yDown = ys[0];
 
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleActionDown(idDown, xDown, yDown);
@@ -92,7 +90,7 @@ public class CocosTouchHandler {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleActionMove(ids, xs, ys);
@@ -106,7 +104,7 @@ public class CocosTouchHandler {
                 final int idPointerUp = pMotionEvent.getPointerId(indexPointUp);
                 final float xPointerUp = pMotionEvent.getX(indexPointUp);
                 final float yPointerUp = pMotionEvent.getY(indexPointUp);
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleActionUp(idPointerUp, xPointerUp, yPointerUp);
@@ -120,7 +118,7 @@ public class CocosTouchHandler {
                 final int idUp = pMotionEvent.getPointerId(0);
                 final float xUp = xs[0];
                 final float yUp = ys[0];
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleActionUp(idUp, xUp, yUp);
@@ -130,7 +128,7 @@ public class CocosTouchHandler {
                 break;
 
             case MotionEvent.ACTION_CANCEL:
-                Cocos2dxHelper.runOnGameThread(new Runnable() {
+                CocosHelper.runOnGameThread(new Runnable() {
                     @Override
                     public void run() {
                         handleActionCancel(ids, xs, ys);

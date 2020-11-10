@@ -61,11 +61,11 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class Cocos2dxHelper {
+public class CocosHelper {
     // ===========================================================
     // Constants
     // ===========================================================
-    private static final String TAG = Cocos2dxHelper.class.getSimpleName();
+    private static final String TAG = CocosHelper.class.getSimpleName();
 
     // ===========================================================
     // Fields
@@ -161,16 +161,16 @@ public class Cocos2dxHelper {
     public static void init(final Activity activity) {
         sActivity = activity;
         if (!sInited) {
-            Cocos2dxHelper.sVibrateService = (Vibrator)activity.getSystemService(Context.VIBRATOR_SERVICE);
-            Cocos2dxHelper.initObbFilePath();
-            Cocos2dxHelper.initializeOBBFile();
+            CocosHelper.sVibrateService = (Vibrator)activity.getSystemService(Context.VIBRATOR_SERVICE);
+            CocosHelper.initObbFilePath();
+            CocosHelper.initializeOBBFile();
 
             sInited = true;
         }
     }
 
     public static float getBatteryLevel() { return sBatteryReceiver.sBatteryLevel; }
-    public static String getObbFilePath() { return Cocos2dxHelper.sObbFilePath; }
+    public static String getObbFilePath() { return CocosHelper.sObbFilePath; }
     public static String getWritablePath() {
         return sActivity.getFilesDir().getAbsolutePath();
     }
@@ -193,7 +193,7 @@ public class Cocos2dxHelper {
                 if (android.os.Build.VERSION.SDK_INT >= 26) {
                     Class<?> vibrationEffectClass = Class.forName("android.os.VibrationEffect");
                     if(vibrationEffectClass != null) {
-                        final int DEFAULT_AMPLITUDE = Cocos2dxReflectionHelper.<Integer>getConstantValue(vibrationEffectClass,
+                        final int DEFAULT_AMPLITUDE = CocosReflectionHelper.<Integer>getConstantValue(vibrationEffectClass,
                                 "DEFAULT_AMPLITUDE");
                         //VibrationEffect.createOneShot(long milliseconds, int amplitude)
                         final Method method = vibrationEffectClass.getMethod("createOneShot",
@@ -203,7 +203,7 @@ public class Cocos2dxHelper {
                         Object effect =  method.invoke(vibrationEffectClass,
                                 new Object[]{(long) (duration * 1000), DEFAULT_AMPLITUDE});
                         //sVibrateService.vibrate(VibrationEffect effect);
-                        Cocos2dxReflectionHelper.invokeInstanceMethod(sVibrateService,"vibrate",
+                        CocosReflectionHelper.invokeInstanceMethod(sVibrateService,"vibrate",
                                 new Class[]{type}, new Object[]{(effect)});
                     }
                 } else {
@@ -240,8 +240,8 @@ public class Cocos2dxHelper {
     
     public static long[] getObbAssetFileDescriptor(final String path) {
         long[] array = new long[3];
-        if (Cocos2dxHelper.sOBBFile != null) {
-            AssetFileDescriptor descriptor = Cocos2dxHelper.sOBBFile.getAssetFileDescriptor(path);
+        if (CocosHelper.sOBBFile != null) {
+            AssetFileDescriptor descriptor = CocosHelper.sOBBFile.getAssetFileDescriptor(path);
             if (descriptor != null) {
                 try {
                     ParcelFileDescriptor parcel = descriptor.getParcelFileDescriptor();
@@ -250,11 +250,11 @@ public class Cocos2dxHelper {
                     array[1] = descriptor.getStartOffset();
                     array[2] = descriptor.getLength();
                 } catch (NoSuchMethodException e) {
-                    Log.e(Cocos2dxHelper.TAG, "Accessing file descriptor directly from the OBB is only supported from Android 3.1 (API level 12) and above.");
+                    Log.e(CocosHelper.TAG, "Accessing file descriptor directly from the OBB is only supported from Android 3.1 (API level 12) and above.");
                 } catch (IllegalAccessException e) {
-                    Log.e(Cocos2dxHelper.TAG, e.toString());
+                    Log.e(CocosHelper.TAG, e.toString());
                 } catch (InvocationTargetException e) {
-                    Log.e(Cocos2dxHelper.TAG, e.toString());
+                    Log.e(CocosHelper.TAG, e.toString());
                 }
             }
         }
@@ -282,14 +282,14 @@ public class Cocos2dxHelper {
         int versionCode = 1;
         final ApplicationInfo applicationInfo = sActivity.getApplicationInfo();
         try {
-            versionCode = Cocos2dxHelper.sActivity.getPackageManager().getPackageInfo(applicationInfo.packageName, 0).versionCode;
+            versionCode = CocosHelper.sActivity.getPackageManager().getPackageInfo(applicationInfo.packageName, 0).versionCode;
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         }
         String pathToOBB = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/obb/" + applicationInfo.packageName + "/main." + versionCode + "." + applicationInfo.packageName + ".obb";
         File obbFile = new File(pathToOBB);
         if (obbFile.exists())
-            Cocos2dxHelper.sObbFilePath = pathToOBB;
+            CocosHelper.sObbFilePath = pathToOBB;
     }
 
     private static void initializeOBBFile() {
@@ -301,7 +301,7 @@ public class Cocos2dxHelper {
             e.printStackTrace();
         }
         try {
-            Cocos2dxHelper.sOBBFile = APKExpansionSupport.getAPKExpansionZipFile(sActivity, versionCode, 0);
+            CocosHelper.sOBBFile = APKExpansionSupport.getAPKExpansionZipFile(sActivity, versionCode, 0);
         } catch (IOException e) {
             e.printStackTrace();
         }

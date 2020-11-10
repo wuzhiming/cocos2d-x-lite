@@ -54,9 +54,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
-public class Cocos2dxHttpURLConnection
+public class CocosHttpURLConnection
 {
-    private static String TAG = "Cocos2dxHttpURLConnection";
+    private static String TAG = "CocosHttpURLConnection";
     private static final String POST_METHOD = "POST" ;
     private static final String PUT_METHOD = "PUT" ;
 
