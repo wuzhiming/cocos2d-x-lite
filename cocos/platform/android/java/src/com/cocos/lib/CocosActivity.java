@@ -116,6 +116,7 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         mFrameLayout.setLayoutParams(frameLayoutParams);
         setContentView(mFrameLayout);
 
+
         mSurfaceView = new SurfaceView(this);
         mSurfaceView.getHolder().addCallback(this);
         mFrameLayout.addView(mSurfaceView);
