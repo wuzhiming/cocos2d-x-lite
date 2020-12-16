@@ -12,7 +12,6 @@ namespace gfx {
 struct CCMTLDepthBias;
 struct CCMTLDepthBounds;
 struct CCMTLGPUPipelineState;
-struct CCMTLGPUBuffer;
 class CCMTLInputAssembler;
 class CCMTLDevice;
 class CCMTLRenderPass;
@@ -23,7 +22,7 @@ class CCMTLCommandBuffer : public CommandBuffer {
 
 public:
     CCMTLCommandBuffer(Device *device);
-    ~CCMTLCommandBuffer();
+    ~CCMTLCommandBuffer() = default;
 
     virtual bool initialize(const CommandBufferInfo &info) override;
     virtual void destroy() override;
@@ -32,7 +31,7 @@ public:
     virtual void beginRenderPass(RenderPass *renderPass, Framebuffer *fbo, const Rect &renderArea, const Color *colors, float depth, int stencil) override;
     virtual void endRenderPass() override;
     virtual void bindPipelineState(PipelineState *pso) override;
-    virtual void bindDescriptorSet(uint set, DescriptorSet *descriptorSet, uint dynamicOffsetCount, const uint *dynamicOffsets) override;
+    virtual void bindDescriptorSet(uint set, DescriptorSet *descriptorSet, uint dynamicOffsetCount, const vector<uint>& dynamicOffsets) override;
     virtual void bindInputAssembler(InputAssembler *ia) override;
     virtual void setViewport(const Viewport &vp) override;
     virtual void setScissor(const Rect &rect) override;
@@ -67,8 +66,6 @@ private:
     MTKView *_mtkView = nil;
     id<MTLCommandBuffer> _mtlCommandBuffer = nil;
     CCMTLRenderCommandEncoder _commandEncoder;
-    CCMTLGPUBuffer _gpuIndexBuffer;
-    CCMTLGPUBuffer _gpuIndirectBuffer;
     CCMTLInputAssembler *_inputAssembler = nullptr;
     MTLIndexType _indexType = MTLIndexTypeUInt16;
     MTLPrimitiveType _mtlPrimitiveType = MTLPrimitiveType::MTLPrimitiveTypeTriangle;
