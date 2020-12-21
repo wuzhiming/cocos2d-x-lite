@@ -482,6 +482,7 @@ elseif(ANDROID)
         cocos/platform/android/jni/JniCocosActivity.h
         cocos/platform/android/jni/JniCocosTouchHandler.cpp
         cocos/platform/android/jni/JniCocosKeyCodeHandler.cpp
+        cocos/platform/android/jni/JniCocosSurfaceView.cpp
 
     )
 elseif(APPLE)

@@ -24,10 +24,10 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     private boolean mDestroyed;
     private SurfaceHolder mSurfaceHolder;
     private FrameLayout mFrameLayout;
-    private SurfaceView mSurfaceView;
+    private CocosSurfaceView mSurfaceView;
     private CocosWebViewHelper mWebViewHelper = null;
     private CocosVideoHelper mVideoHelper = null;
-
+    private CocosOrientationHelper mOrientationHelper = null;
 
     private boolean engineInit = false;
 
@@ -76,6 +76,8 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         setImmersiveMode();
 
         Utils.hideVirtualButton();
+
+        mOrientationHelper = new CocosOrientationHelper(this);
     }
 
     private void setImmersiveMode() {
@@ -116,7 +118,7 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
         mFrameLayout.setLayoutParams(frameLayoutParams);
         setContentView(mFrameLayout);
 
-        mSurfaceView = new SurfaceView(this);
+        mSurfaceView = new CocosSurfaceView(this);
         mSurfaceView.getHolder().addCallback(this);
         mFrameLayout.addView(mSurfaceView);
 
@@ -151,6 +153,7 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     protected void onPause() {
         super.onPause();
         mSensorHandler.onPause();
+        mOrientationHelper.onPause();
         onPauseNative();
     }
 
@@ -158,6 +161,7 @@ public class CocosActivity extends Activity implements SurfaceHolder.Callback {
     protected void onResume() {
         super.onResume();
         mSensorHandler.onResume();
+        mOrientationHelper.onResume();
         onResumeNative();
     }
 
