@@ -30,7 +30,7 @@
 
 #include "Game.h"
 
-cc::Device::Rotation _lastLocation;
+cc::Device::Orientation _lastOrientation;
 
 @implementation AppDelegate
 
@@ -65,29 +65,29 @@ Game* game = nullptr;
 
 
 - (void) orientationChanged:(NSNotification *)note {
-    cc::Device::Rotation rotation = cc::Device::Rotation::_0;
+    cc::Device::Orientation orientation = cc::Device::Orientation::PORTRAIT;
     UIDevice * device = note.object;
 
     switch (device.orientation)
     {
         case UIDeviceOrientationPortrait:
-            rotation = cc::Device::Rotation::_0;
+            orientation = cc::Device::Orientation::PORTRAIT;
             break;
         case UIDeviceOrientationLandscapeRight:
-            rotation = cc::Device::Rotation::_90;
+            orientation = cc::Device::Orientation::LANDSCAPE_RIGHT;
             break;
         case UIDeviceOrientationPortraitUpsideDown:
-            rotation = cc::Device::Rotation::_180;
+            orientation = cc::Device::Orientation::PORTRAIT_UPSIDE_DOWN;
             break;
         case UIDeviceOrientationLandscapeLeft:
-            rotation = cc::Device::Rotation::_270;
+            orientation = cc::Device::Orientation::LANDSCAPE_LEFT;
             break;
         default:
             break;
     };
-    if (_lastLocation != rotation) {
-        cc::EventDispatcher::dispatchOrientationChangeEvent((int) rotation);
-        _lastLocation = rotation;
+    if (_lastOrientation != orientation) {
+        cc::EventDispatcher::dispatchOrientationChangeEvent((int) orientation);
+        _lastOrientation = orientation;
     }
 }
 
