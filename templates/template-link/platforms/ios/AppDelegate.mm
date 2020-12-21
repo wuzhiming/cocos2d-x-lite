@@ -30,7 +30,7 @@
 
 #include "Game.h"
 
-cc::Device::Orientation _lastOrientation;
+cc::Device::Rotation _lastLocation;
 
 @implementation AppDelegate
 
@@ -56,7 +56,7 @@ Game* game = nullptr;
     game->init();
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-        selector:@selector(statusBarOrientationChanged:)name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+        selector:@selector(orientationChanged:)name:UIDeviceOrientationDidChangeNotification object:nil];
 
     [self.window makeKeyAndVisible];
 
@@ -64,31 +64,30 @@ Game* game = nullptr;
 }
 
 
-- (void) statusBarOrientationChanged:(NSNotification *)note {
-    // https://developer.apple.com/documentation/uikit/uideviceorientation
-    // NOTE: do not use API [UIDevice currentDevice].orientation to get the device orientation
-    // when the device rotates to LandscapeLeft, device.orientation returns UIDeviceOrientationLandscapeRight
-    // when the device rotates to LandscapeRight, device.orientation returns UIDeviceOrientationLandscapeLeft
-    cc::Device::Orientation orientation;
-    switch([[UIApplication sharedApplication] statusBarOrientation]) {
-        case UIInterfaceOrientationLandscapeRight:
-            orientation = cc::Device::Orientation::LANDSCAPE_RIGHT;
+- (void) orientationChanged:(NSNotification *)note {
+    cc::Device::Rotation rotation = cc::Device::Rotation::_0;
+    UIDevice * device = note.object;
+
+    switch (device.orientation)
+    {
+        case UIDeviceOrientationPortrait:
+            rotation = cc::Device::Rotation::_0;
             break;
-        case UIInterfaceOrientationLandscapeLeft:
-            orientation = cc::Device::Orientation::LANDSCAPE_LEFT;
+        case UIDeviceOrientationLandscapeRight:
+            rotation = cc::Device::Rotation::_90;
             break;
-        case UIInterfaceOrientationPortraitUpsideDown:
-            orientation = cc::Device::Orientation::PORTRAIT_UPSIDE_DOWN;
+        case UIDeviceOrientationPortraitUpsideDown:
+            rotation = cc::Device::Rotation::_180;
             break;
-        case UIInterfaceOrientationPortrait:
-            orientation = cc::Device::Orientation::PORTRAIT;
+        case UIDeviceOrientationLandscapeLeft:
+            rotation = cc::Device::Rotation::_270;
             break;
         default:
             break;
-    }
-    if(_lastOrientation != orientation){
-        cc::EventDispatcher::dispatchOrientationChangeEvent((int) orientation);
-        _lastOrientation = orientation;
+    };
+    if (_lastLocation != rotation) {
+        cc::EventDispatcher::dispatchOrientationChangeEvent((int) rotation);
+        _lastLocation = rotation;
     }
 }
 
