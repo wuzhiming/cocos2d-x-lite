@@ -483,6 +483,7 @@ elseif(ANDROID)
         cocos/platform/android/jni/JniCocosTouchHandler.cpp
         cocos/platform/android/jni/JniCocosKeyCodeHandler.cpp
         cocos/platform/android/jni/JniCocosSurfaceView.cpp
+        cocos/platform/android/jni/JniCocosOrientationHelper.cpp
 
     )
 elseif(APPLE)
