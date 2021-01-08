@@ -14,4 +14,16 @@ buildscript {
     }
 }
 
-apply from: "${NATIVE_DIR}/build.gradle"
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

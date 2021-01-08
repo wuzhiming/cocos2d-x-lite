@@ -47,11 +47,11 @@
                 "proj/build-cfg.json"
             ]
         },
-
         "projectReplaceTemplatePath": {
             "pattern":"\\$\\{NATIVE_DIR\\}",
             "files": [
-                "proj/settings.gradle"
+                "proj/settings.gradle",
+                "proj/build.gradle"
             ]
         },
         "projectReplaceProjectCommon" : {

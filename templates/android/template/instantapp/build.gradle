@@ -38,7 +38,8 @@ android {
 
     externalNativeBuild {
         cmake {
-                path "../CMakeLists.txt"
+            path "../CMakeLists.txt"
+            buildStagingDirectory "${RES_PATH}/proj/build"
         }
     }
 
