@@ -96,12 +96,11 @@ android.applicationVariants.all { variant ->
     }
 
     tasks.getByName("pre${targetName}Build").dependsOn copyTaskName
-
 }
 
 dependencies {
     implementation fileTree(dir: '../libs', include: ['*.jar','*.aar'])
     implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
-    implementation fileTree(dir: "/Users/wzm/cocos_creator/cocos2d-x-lite-3d/cocos/platform/android/java/libs", include: ['*.jar'])
+    implementation fileTree(dir: "${COCOS_ENGINE_PATH}/cocos/platform/android/java/libs", include: ['*.jar'])
     implementation project(':libcocos')
 }
