@@ -6,7 +6,7 @@ COCOS2DX_ROOT="$DIR"/../..
 COCOS_CLI=$COCOS2DX_ROOT/tools/cocos-console/bin/cocos_cli.js
 TOJS_ROOT=$COCOS2DX_ROOT/tools/tojs
 
-NATIVE_DIR=$COCOS2DX_ROOT/templates/android/template
+NATIVE_DIR=$COCOS2DX_ROOT/templates/android/android-template
 
 if [ -z "$NDK_ROOT" ]; then
     export NDK_ROOT=$HOME/bin/android-ndk
@@ -133,7 +133,7 @@ function build_macosx()
     cd ..
     mkdir build-mac-apple-silicon
     cd build-mac-apple-silicon
-    cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCC_USE_METAL=ON -DCC_USE_GLES3=OFF -DCMAKE_OSX_ARCHITECTURES=arm64
+    cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCC_USE_METAL=ON -DCC_USE_GLES3=OFF -DCMAKE_OSX_ARCHITECTURES=arm64 -DCOCOS_X_PATH=$COCOS2DX_ROOT
     cmake --build . --config Release -- -quiet -jobs $NUM_OF_CORES
     echo "Compile MacOSX ARM64 Release Done!"
 }
@@ -167,11 +167,11 @@ function build_windows()
     touch build-win32/proj/cfg.cmake
     mkdir build-win32/assets
     cd build-win32
-    RES_DIR = $COCOS2DX_ROOT/templates/win32/build-win32
+    RES_DIR=$COCOS2DX_ROOT/templates/win32/build-win32
     cmake ../ -G"Visual Studio 15 2017" -DCOCOS_ROOT=$COCOS2DX_ROOT -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
-    cmake --build . --config Debug
+    cmake --build . --config Debug -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
     echo "Compile Win32 Debug Done!"
-    cmake --build . --config Release
+    cmake --build . --config Release -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
     echo "Compile Win32 Debug Done!"
 }
 
