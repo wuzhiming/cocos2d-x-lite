@@ -30,7 +30,7 @@ add_library(${LIB_NAME} SHARED ${PROJ_SOURCES})
 target_link_libraries(${LIB_NAME}
     "-Wl,--whole-archive" cocos2d_jni "-Wl,--no-whole-archive"
     cocos2d
-    )
+)
 
 target_include_directories(${LIB_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/../common/Classes
