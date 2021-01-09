@@ -58,11 +58,17 @@ function build_android()
 {
     echo "Compiling Android ... "
     cd $COCOS2DX_ROOT/templates/android/build
+    mkdir -p build-android/proj
+    mkdir -p/build-android/assets
+    touch build-android/proj/cfg.cmake
+
+    ASSET_DIR = $COCOS2DX_ROOT/templates/android/build/build-android/
+
     sed -i "s@\${NATIVE_DIR}@$NATIVE_DIR@g" settings.gradle
     sed -i "s@\${NATIVE_DIR}@$NATIVE_DIR@g" build.gradle
-    sed -i "s/^APPLICATION_ID.*/APPLICATION_ID=com.cocos.android/g" gradle.properties
-    sed -i "s/^RES_DIR.*/RES_DIR=UNUSE_RES_DIR/g" gradle.properties
-    sed -i "s/^COCOS_ENGINE_PATH.*/COCOS_ENGINE_PATH=$COCOS2DX_ROOT/g" gradle.properties
+    sed -i "s@^APPLICATION_ID.*@APPLICATION_ID=com.cocos.android@g" gradle.properties
+    sed -i "s@^RES_DIR.*@RES_DIR=$ASSET_DIR@g" gradle.properties
+    sed -i "s@^COCOS_ENGINE_PATH.*@COCOS_ENGINE_PATH=$COCOS2DX_ROOT@g" gradle.properties
 
     #echo "Compile Android - ndk-build ..."
     #./gradlew assembleDebug --quiet
@@ -108,9 +114,13 @@ function build_macosx()
 
     echo "Compiling MacOSX ... "
     cd  $COCOS2DX_ROOT/templates/mac
-    mkdir build-mac
+    mkdir -p build-mac/proj
+    touch build-mac/proj/cfg.cmake
+    mkdir build-mac/assets
+
+    RES_DIR = $COCOS2DX_ROOT/templates/mac/build-mac
     cd build-mac
-    cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCC_USE_METAL=ON -DCMAKE_OSX_ARCHITECTURES=x86_64
+    cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCC_USE_METAL=ON -DCMAKE_OSX_ARCHITECTURES=x86_64 -DRES_DIR=$RES_DIR
     cmake --build . --config Release -- -quiet -jobs $NUM_OF_CORES
     echo "Compile MacOSX X86_64 Release Done!"
     cd ..
@@ -127,12 +137,16 @@ function build_ios()
 
     echo "Compiling iOS ... "
     cd  $COCOS2DX_ROOT/templates/ios
-    mkdir build-ios
+    mkdir -p build-ios/proj
+    touch build-ios/proj/cfg.cmake
+    mkdir build-ios/assets
     cd build-ios
+    RES_DIR = $COCOS2DX_ROOT/templates/mac/build-mac
     cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_SYSROOT=iphonesimulator \
         -DCMAKE_OSX_ARCHITECTURES=x86_64 \
-        -DCC_USE_METAL=ON
+        -DCC_USE_METAL=ON \
+        -DRES_DIR=$RES_DIR
     cmake --build . --config Debug -- -quiet -jobs $NUM_OF_CORES -allowProvisioningUpdates
     echo "Compile iOS Done!"
 }
@@ -141,9 +155,12 @@ function build_windows()
 {
     echo "Compiling Win32 ... "
     cd  $COCOS2DX_ROOT/templates/win32
-    mkdir build-win32
+    mkdir -p build-win32/proj
+    touch build-win32/proj/cfg.cmake
+    mkdir build-win32/assets
     cd build-win32
-    cmake ../ -G"Visual Studio 15 2017" -DCOCOS_ROOT=$COCOS2DX_ROOT
+    RES_DIR = $COCOS2DX_ROOT/templates/mac/build-mac
+    cmake ../ -G"Visual Studio 15 2017" -DCOCOS_ROOT=$COCOS2DX_ROOT -DRES_DIR=$RES_DIR
     cmake --build . --config Debug
     echo "Compile Win32 Debug Done!"
     cmake --build . --config Release
