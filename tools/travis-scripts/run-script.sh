@@ -6,7 +6,7 @@ COCOS2DX_ROOT="$DIR"/../..
 COCOS_CLI=$COCOS2DX_ROOT/tools/cocos-console/bin/cocos_cli.js
 TOJS_ROOT=$COCOS2DX_ROOT/tools/tojs
 
-NATIVE_DIR=$COCOS2DX_ROOT/templates/android/android-template
+NATIVE_DIR=$COCOS2DX_ROOT/templates/android-template
 
 if [ -z "$NDK_ROOT" ]; then
     export NDK_ROOT=$HOME/bin/android-ndk
