@@ -127,13 +127,13 @@ function build_macosx()
 
     RES_DIR=$COCOS2DX_ROOT/templates/mac/build-mac
     cd build-mac
-    cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCC_USE_METAL=ON -DCMAKE_OSX_ARCHITECTURES=x86_64 -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
+    cmake ../ -GXcode -DCC_USE_METAL=ON -DCMAKE_OSX_ARCHITECTURES=x86_64 -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
     cmake --build . --config Release -- -quiet -jobs $NUM_OF_CORES
     echo "Compile MacOSX X86_64 Release Done!"
     cd ..
     mkdir build-mac-apple-silicon
     cd build-mac-apple-silicon
-    cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCC_USE_METAL=ON -DCC_USE_GLES3=OFF -DCMAKE_OSX_ARCHITECTURES=arm64 -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
+    cmake ../ -GXcode -DCC_USE_METAL=ON -DCC_USE_GLES3=OFF -DCMAKE_OSX_ARCHITECTURES=arm64 -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
     cmake --build . --config Release -- -quiet -jobs $NUM_OF_CORES
     echo "Compile MacOSX ARM64 Release Done!"
 }
