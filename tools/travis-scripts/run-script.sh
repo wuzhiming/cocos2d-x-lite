@@ -149,7 +149,7 @@ function build_ios()
     mkdir build-ios/assets
     cd build-ios
     RES_DIR=$COCOS2DX_ROOT/templates/ios/build-ios
-    cmake ../ -GXcode -DCOCOS_ROOT=$COCOS2DX_ROOT -DCMAKE_SYSTEM_NAME=iOS \
+    cmake ../ -GXcode -DCMAKE_SYSTEM_NAME=iOS \
         -DCMAKE_OSX_SYSROOT=iphonesimulator \
         -DCMAKE_OSX_ARCHITECTURES=x86_64 \
         -DCC_USE_METAL=ON \
@@ -168,7 +168,7 @@ function build_windows()
     mkdir build-win32/assets
     cd build-win32
     RES_DIR=$COCOS2DX_ROOT/templates/win32/build-win32
-    cmake ../ -G"Visual Studio 15 2017" -DCOCOS_ROOT=$COCOS2DX_ROOT -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
+    cmake ../ -G"Visual Studio 15 2017" -DRES_DIR=$RES_DIR -DCOCOS_X_PATH=$COCOS2DX_ROOT
     cmake --build . --config Debug
     echo "Compile Win32 Debug Done!"
     cmake --build . --config Release
